@@ -1,0 +1,59 @@
+#!/usr/bin/bash
+# This script simply creates and/or updates window-name.txt in the working
+# directory at a set interval of time. This was intended to be used with OBS to
+# update labels that show what music is playing in the web browser when all other
+# methods fail.
+
+# to-do:
+#    - check/install for runtime deps at start
+#    - create an elegant quit function that doesn't rely on KB interrupts
+#    - allow floating point numbers for sleep_time
+#    - verify window existence before updating window_name and printing it to a file
+#    - create GUI
+
+# define vars
+running=true
+
+# define funcs
+function is_int() { return $(test "$@" -eq "$@" > /dev/null 2>&1); }
+
+# get the desired window's ID based on what the user clicks
+clear
+echo Please click a window to select it... \(waiting - ctrl+c to exit\)
+desired_window=`xdotool selectwindow`
+window_name=`xdotool getwindowname $desired_window`
+echo The window with the name \"$window_name\" has been selected.
+
+# ask for time to sleep each iteration
+while true
+do
+    clear
+    read -p "How often should the file update? [seconds]> " sleep_time
+    if $(is_int "${sleep_time}"); then
+        break
+    else
+        clear
+        echo "\"${sleep_time}\" is not an integer. This field only accepts integers."
+        read -p "Press enter to continue..."
+    fi
+done
+
+# loop responsible for updating file
+while $running
+do
+    clear
+    echo window-name-to-file is running...
+    echo Created by Nicholas Girga
+    echo Released with ABSOLUTELY NO WARRANTY
+    echo To stop window-name-to-file, press ctrl+c
+    echo
+    echo Printing to \"`pwd`\/window-name.txt\"
+    echo
+    window_name=`xdotool getwindowname $desired_window`
+    echo The selected window\'s name is currently \"$window_name\"
+    sleep $sleep_time
+    echo
+    echo $window_name > window-name.txt
+    echo Printed to file.
+    sleep 0.1
+done
