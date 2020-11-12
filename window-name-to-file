@@ -28,7 +28,9 @@ clear
 echo Please click a window to select it... \(waiting - ctrl+c to exit\)
 desired_window=`xdotool selectwindow`
 window_name=`xdotool getwindowname $desired_window`
+clear
 echo The window with the name \"$window_name\" has been selected.
+read -p "Press enter to continue..."
 
 # ask for the time to sleep inbetween each iteration of the main loop
 while true
