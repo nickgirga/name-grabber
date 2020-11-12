@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 # window-name-to-file
-# version 1.0
+# Version 1.0
 # Nicholas Girga
-# Released under GPL3
+# Released under GPL3 with ABSOLUTELY NO WARRANTY
 
 # This script simply creates and/or updates "window-name.txt" in the working
 # directory at a set interval of time. This was intended to be used with OBS to
@@ -10,7 +10,7 @@
 # methods fail.
 
 # to-do:
-#    - check/install for runtime deps at start
+#    - check for runtime deps at start and install if needed
 #    - create an elegant quit function that doesn't rely on KB interrupts
 #    - allow floating point numbers for sleep_time
 #    - verify window existence before updating window_name and printing it to a file
@@ -50,8 +50,9 @@ while $running
 do
     clear
     echo window-name-to-file is running...
+    echo Version 1.0
     echo Created by Nicholas Girga
-    echo Released with ABSOLUTELY NO WARRANTY
+    echo Released under GPL3 with ABSOLUTELY NO WARRANTY
     echo To stop window-name-to-file, press ctrl+c
     echo
     echo Printing to \"`pwd`\/window-name.txt\"
