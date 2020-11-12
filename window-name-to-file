@@ -29,7 +29,7 @@ desired_window=`xdotool selectwindow`
 window_name=`xdotool getwindowname $desired_window`
 echo The window with the name \"$window_name\" has been selected.
 
-# ask for time to sleep each iteration
+# ask for the time to sleep inbetween each iteration of the main loop
 while true
 do
     clear
