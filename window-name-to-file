@@ -10,6 +10,7 @@
 # methods fail.
 
 # to-do:
+#    - ask for substring start and end
 #    - check for runtime deps at start and install if needed
 #    - create an elegant quit function that doesn't rely on KB interrupts
 #    - allow floating point numbers for sleep_time
