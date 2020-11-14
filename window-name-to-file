@@ -158,7 +158,7 @@ while (running):
     time.sleep(sleep_time - 0.3)
     try:
         # print to file
-        file = open(file_destination + "/windows-name.txt", "w")
+        file = open(file_destination + "/window-name.txt", "w")
         file.write(pretty_window_name)
         file.close()
     except:
