@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/usr/bin/python
 # window-name-to-file
-# Version 1.0
+# Version 2.0
 # Nicholas Girga
 # Released under GPL3 with ABSOLUTELY NO WARRANTY
 
@@ -10,63 +10,117 @@
 # methods fail.
 
 # to-do:
-#    - ask for substring start and end
+#    - finish main loop
 #    - check for runtime deps at start and install if needed
 #    - create an elegant quit function that doesn't rely on KB interrupts
 #    - allow floating point numbers for sleep_time
-#    - verify window existence before updating window_name and printing it to a file
+#    - add folder selector (using zenity) for where window-name.txt will be printed
 #    - create GUI
 
-# define vars
-running=true # determines if the main loop should keep iterating
+### imports
+import subprocess
+import sys
+import os
 
-# define funcs
-function is_int() { return $(test "$@" -eq "$@" > /dev/null 2>&1); } # check if integer
+### define vars
+running = False # determines if the main loop should keep iterating
+sleep_time = 1 # the time to sleep inbetween each iteration of the main loop
+substring_start = 0 # how much of the start should be cut from window_name
+substring_end = 0 # how much of the end should be cut from window_name
+desired_window = b'0' # the ID of the window selected by the user
+window_name = "" # the full name of the window selected by the user
 
-# get the desired window's ID based on what the user clicks
-clear
-echo Please click a window to select it... \(waiting - ctrl+c to exit\)
-desired_window=`xdotool selectwindow`
-window_name=`xdotool getwindowname $desired_window`
-clear
-echo The window with the name \"$window_name\" has been selected.
-read -p "Press enter to continue..."
+### define funcs
+# retrieve input (integer only) from the user
+def get_input_int(prompt: str) -> int:
+    # start a validation loop
+    while (True):
+        os.system("clear")
+        user_input = input(prompt)
+        try:
+            # try converting to integer
+            user_input_int = int(user_input)
+            return user_input_int
+        except ValueError:
+            os.system("clear")
+            # report that user_input is not valid and allow loop to continue
+            print("\"" + user_input + "\" is not a valid integer. This field only accepts integers.")
+            input("Press enter to continue...")
+            
+# get_input_int but with minimum and maximum limits
+def get_input_int_clamped(prompt: str, minimum: int, maximum: int):
+    while (True):
+        user_input_int = get_input_int(prompt)
+        if (minimum <= user_input_int and user_input_int <= maximum):
+            # return if user_input is valid
+            return user_input_int
+        else:
+            # report that user_input is out of range and allow loop to continue
+            os.system("clear")
+            print("\"" + str(user_input_int) + "\" is not within the range of this field. The range is " + str(minimum) + "-" + str(maximum))
+            input("Press enter to continue...")
 
-# ask for the time to sleep inbetween each iteration of the main loop
-while true
-do
-    clear
-    read -p "How often should the file update? [seconds]> " sleep_time
-    if $(is_int "${sleep_time}"); then
-        # leave the validation loop if the user enters an integer
-        break
-    else
-        # report to the user if the entered value was not an integer
-        clear
-        echo "\"${sleep_time}\" is not an integer. This field only accepts integers."
-        read -p "Press enter to continue..."
-    fi
-done
+# returns the name of the window that has been passed in
+def get_window_name(window: bytes) -> str:
+    _window_name = ""
 
-# loop responsible for updating file
-while $running
-do
-    clear
-    echo window-name-to-file is running...
-    echo Version 1.0
-    echo Created by Nicholas Girga
-    echo Released under GPL3 with ABSOLUTELY NO WARRANTY
-    echo To stop window-name-to-file, press ctrl+c
-    echo
-    echo Printing to \"`pwd`\/window-name.txt\"
-    echo
-    # update window_name
-    window_name=`xdotool getwindowname $desired_window`
-    echo The selected window\'s name is currently \"$window_name\"
-    sleep $sleep_time
-    echo
-    # print window_name to "window-name.txt" in the working directory
-    echo $window_name > window-name.txt
-    echo Printed to file.
-    sleep 0.1
-done
+    try:
+        # try to call xdotool
+        _window_name = subprocess.check_output(["xdotool", "getwindowname", str(int(desired_window))])
+    except:
+        # exit window-name-to-file if xdotool acts funny
+        os.system("clear")
+        print("ERR: xdotool could not retrieve the name of the window with the id \"" + str(int(desired_window)) + "\"")
+        sys.exit()
+
+    try:
+        # clip off the end-line (\n) from _window_name
+        _window_name_sub = _window_name[:len(_window_name) - 1]
+        # decode _window_name_sub from bytes to string and return it
+        return _window_name_sub.decode("utf-8")
+    except:
+        os.system("clear")
+        print("ERR: failed to decode response from xdotool: \"" + str(_window_name) + "\"")
+        sys.exit()
+
+# select a window using xdotool (settings desired_window) and set window_name with get_window_name(desired_window)
+def select_window() -> bytes:
+    _desired_window = ""
+
+    os.system("clear")
+    print("Please click a window to select it... (waiting - ctrl+c to exit)")
+
+    try:
+        # try to call xdotool
+        _desired_window = subprocess.check_output(["xdotool", "selectwindow"])
+    except:
+        # exit window-name-to-file if xdotool acts funny
+        os.system("clear")
+        print("ERR: xdotool could not retrieve the ID of the selected window!")
+        sys.exit()
+    # return if _desired_window is of the type 'bytes'
+    if (isinstance(_desired_window, bytes)):
+        return _desired_window
+
+    # exit if _desired_window is not of the type 'bytes'
+    os.system("clear")
+    print("ERR: xdotool could not retrieve the ID of the selected window!")
+    sys.exit()
+
+### start
+desired_window = select_window() # ask for desired_window
+window_name = get_window_name(desired_window) # fetch the name of desired_window
+os.system("clear")
+print("The window with the name \"" + window_name + "\" has been selected.")
+input("Press enter to continue...")
+
+# settings
+sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 0, 9999)
+substring_start = get_input_int_clamped("Should I cut off any starting characters? > ", 0, len(window_name)) 
+substring_end = get_input_int_clamped("Should I cut off any ending characters? > ", 0, len(window_name) - substring_start)
+# to-do: add folder selector for where window-name.txt will be printed using the line below
+# subprocess.check_output(["zenity", "--file-selection", "--directory", "--title", "window-name.txt destination"])
+
+# print (will become main loop later)
+pretty_window_name = window_name[substring_start:len(window_name) - substring_end]
+print(pretty_window_name)
