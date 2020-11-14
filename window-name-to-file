@@ -10,25 +10,27 @@
 # methods fail.
 
 # to-do:
-#    - finish main loop
 #    - check for runtime deps at start and install if needed
 #    - create an elegant quit function that doesn't rely on KB interrupts
-#    - allow floating point numbers for sleep_time
-#    - add folder selector (using zenity) for where window-name.txt will be printed
 #    - create GUI
+#    - allow floating point numbers for sleep_time (this requires real GUI first; the current
+#      method of displaying "Printed to file" would not function correctly without whole numbers)
 
 ### imports
+from os.path import expanduser
 import subprocess
+import time
 import sys
 import os
 
 ### define vars
-running = False # determines if the main loop should keep iterating
+running = True # determines if the main loop should keep iterating
 sleep_time = 1 # the time to sleep inbetween each iteration of the main loop
 substring_start = 0 # how much of the start should be cut from window_name
 substring_end = 0 # how much of the end should be cut from window_name
 desired_window = b'0' # the ID of the window selected by the user
 window_name = "" # the full name of the window selected by the user
+file_destination = expanduser("~")
 
 ### define funcs
 # retrieve input (integer only) from the user
@@ -107,6 +109,17 @@ def select_window() -> bytes:
     os.system("clear")
     print("ERR: xdotool could not retrieve the ID of the selected window!")
     sys.exit()
+    
+# prompt user for destination folder using zenity
+def ask_for_folder() -> str:
+    _file_destination = ""
+    try:
+        _file_destination = subprocess.check_output(["zenity", "--file-selection", "--directory", "--title", "window-name.txt destination"])
+        _file_destination_sub = _file_destination[:len(_file_destination) - 1]
+        return _file_destination_sub.decode("utf-8")
+    except:
+        print("ERR: folder could not be found. Using \"" + str(file_destination) + "\"")
+        return file_destination
 
 ### start
 desired_window = select_window() # ask for desired_window
@@ -119,9 +132,38 @@ input("Press enter to continue...")
 sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 0, 9999)
 substring_start = get_input_int_clamped("Should I cut off any starting characters? > ", 0, len(window_name)) 
 substring_end = get_input_int_clamped("Should I cut off any ending characters? > ", 0, len(window_name) - substring_start)
-# to-do: add folder selector for where window-name.txt will be printed using the line below
-# subprocess.check_output(["zenity", "--file-selection", "--directory", "--title", "window-name.txt destination"])
+os.system("clear")
+print("Please select a folder for window-name.txt to be generated...")
+file_destination = ask_for_folder()
+os.system("clear")
+print("window-name.txt will be generated in \"" + file_destination + "\"")
+input("Press enter to start main loop...")
 
-# print (will become main loop later)
-pretty_window_name = window_name[substring_start:len(window_name) - substring_end]
-print(pretty_window_name)
+# main loop
+while (running):
+    os.system("clear")
+    # print license info
+    print("window-name-to-file is running...")
+    print("Version 2.0")
+    print("Created by Nicholas Girga")
+    print("Released under GPL3 with ABSOLUTELY NO WARRANTY")
+    print("To stop window-name-to-file, press ctrl+c")
+    print()
+    print("Printing to \"" + file_destination + "/window-name.txt\"")
+    print()
+    # update window_name, pretty_window_name, and inform the user of what it has potentially changed to
+    window_name = get_window_name(desired_window)
+    pretty_window_name = window_name[substring_start:len(window_name) - substring_end]
+    print("The selected window's name is currently \"" + pretty_window_name + "\"")
+    time.sleep(sleep_time - 0.3)
+    try:
+        # print to file
+        file = open(file_destination + "/windows-name.txt", "w")
+        file.write(pretty_window_name)
+        file.close()
+    except:
+        print("ERR: failed to print to file.")
+        sys.exit()
+    print()
+    print("Printed to file.")
+    time.sleep(0.3)
