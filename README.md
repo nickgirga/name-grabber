@@ -7,9 +7,9 @@ This script simply creates and/or updates `window-name.txt` in the working direc
 You can clone the repository by running `git clone https://gitlab.com/nickgirga/bootsplash-theme-pink.git` in a terminal. Since this is just a simple script with no additional resources packaged with it, it is not necessary to clone the whole repository. The `window-name-to-file` script in the repository's root directory should be sufficient.
 
 # Dependencies
- - [python](https://www.python.org/)
+ - [python by the Python Software Foundation](https://www.python.org/)
  - [xdotool by Jordan Sissel](https://github.com/jordansissel/xdotool)
- - [zenity](https://gitlab.gnome.org/GNOME/zenity) (not yet, but very soon)
+ - [zenity by GNOME](https://gitlab.gnome.org/GNOME/zenity) (not yet, but very soon)
 
 # Installation
 Simply run it... It's just a script, so it doesn't need any "installation". It should already be, but make sure it has the ability to be executed. There should be a checkbox for that in the file properties depending on your desktop environment and the file manager you use. If there is not one, you can make it executable by opening a terminal in the directory containing our script and running `sudo chmod +x window-name-to-file`. After that is done, you should be able to launch it by running `./window-name-to-file`.
