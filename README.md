@@ -1,7 +1,7 @@
 # window-name-to-file
 This script simply creates/updates `window-name.txt` in the specified directory at the interval of time that you set. This was intended to be used with OBS to update labels that show what music is playing in the web browser when all other methods fail.
 
-![screenshot_0.png](.screenshots/screenshot_1.png)
+![screenshot_0.png](.screenshots/screenshot_0.png)
 
 # Obtaining
 You can clone the repository by running `git clone https://gitlab.com/nickgirga/bootsplash-theme-pink.git` in a terminal. Since this is just a simple script with no additional resources packaged with it, it is not necessary to clone the whole repository. The `window-name-to-file` script in the repository's root directory should be sufficient.
