@@ -86,7 +86,7 @@ def get_window_name(window: bytes) -> str:
         print("ERR: failed to decode response from xdotool: \"" + str(_window_name) + "\"")
         sys.exit()
 
-# select a window using xdotool (settings desired_window) and set window_name with get_window_name(desired_window)
+# select a window using xdotool
 def select_window() -> bytes:
     _desired_window = ""
 
