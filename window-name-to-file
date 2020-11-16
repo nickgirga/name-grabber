@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # window-name-to-file
-# Version 2.0
+# Version 2.1
 # Nicholas Girga
 # Released under GPL3 with ABSOLUTELY NO WARRANTY
 
@@ -28,17 +28,25 @@ running = True # determines if the main loop should keep iterating
 sleep_time = 1 # the time to sleep inbetween each iteration of the main loop
 substring_start = 0 # how much of the start should be cut from window_name
 substring_end = 0 # how much of the end should be cut from window_name
+prefix = "" # added before window_name in pretty_window_name
+suffix = "" # added after window_name in pretty_window_name
 desired_window = b'0' # the ID of the window selected by the user
 window_name = "" # the full name of the window selected by the user
+pretty_window_name = "" # window_name after being trimmed
 file_destination = expanduser("~")
 
 ### define funcs
+# retrieve input from user
+def get_input(prompt: str) -> str:
+    os.system("clear")
+    user_input = input(prompt)
+    return user_input
+
 # retrieve input (integer only) from the user
 def get_input_int(prompt: str) -> int:
     # start a validation loop
     while (True):
-        os.system("clear")
-        user_input = input(prompt)
+        user_input = get_input(prompt)
         try:
             # try converting to integer
             user_input_int = int(user_input)
@@ -132,6 +140,8 @@ input("Press enter to continue...")
 sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 0, 9999)
 substring_start = get_input_int_clamped("Should I cut off any starting characters? > ", 0, len(window_name)) 
 substring_end = get_input_int_clamped("Should I cut off any ending characters? > ", 0, len(window_name) - substring_start)
+prefix = get_input("Should I add any text before the window title? > ")
+suffix = get_input("Should I add any text after the window title? > ")
 os.system("clear")
 print("Please select a folder for window-name.txt to be generated...")
 file_destination = ask_for_folder()
@@ -144,7 +154,7 @@ while (running):
     os.system("clear")
     # print license info
     print("window-name-to-file is running...")
-    print("Version 2.0")
+    print("Version 2.1")
     print("Created by Nicholas Girga")
     print("Released under GPL3 with ABSOLUTELY NO WARRANTY")
     print("To stop window-name-to-file, press ctrl+c")
@@ -153,7 +163,7 @@ while (running):
     print()
     # update window_name, pretty_window_name, and inform the user of what it has potentially changed to
     window_name = get_window_name(desired_window)
-    pretty_window_name = window_name[substring_start:len(window_name) - substring_end]
+    pretty_window_name = prefix + window_name[substring_start:len(window_name) - substring_end] + suffix
     print("The selected window's name is currently \"" + pretty_window_name + "\"")
     time.sleep(sleep_time - 0.3)
     try:
