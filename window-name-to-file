@@ -126,8 +126,8 @@ def ask_for_folder() -> str:
         _file_destination_sub = _file_destination[:len(_file_destination) - 1]
         return _file_destination_sub.decode("utf-8")
     except:
-        print("ERR: folder could not be found. Using \"" + str(file_destination) + "\"")
-        return file_destination
+        print("ERR: folder could not be found or cancel was pressed. Exiting.")
+        sys.exit()
 
 ### start
 desired_window = select_window() # ask for desired_window
@@ -138,10 +138,10 @@ input("Press enter to continue...")
 
 # settings
 sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 0, 9999)
-substring_start = get_input_int_clamped("Should I cut off any starting characters? > ", 0, len(window_name)) 
-substring_end = get_input_int_clamped("Should I cut off any ending characters? > ", 0, len(window_name) - substring_start)
-prefix = get_input("Should I add any text before the window title? > ")
-suffix = get_input("Should I add any text after the window title? > ")
+substring_start = get_input_int_clamped("Should I cut off any starting characters? [0 to skip]> ", 0, len(window_name)) 
+substring_end = get_input_int_clamped("Should I cut off any ending characters? [0 to skip]> ", 0, len(window_name) - substring_start)
+prefix = get_input("Should I add any text before the window title? [leave blank to skip]> ")
+suffix = get_input("Should I add any text after the window title? [leave blank to skip]> ")
 os.system("clear")
 print("Please select a folder for window-name.txt to be generated...")
 file_destination = ask_for_folder()
