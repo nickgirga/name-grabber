@@ -33,7 +33,9 @@ suffix = "" # added after window_name in pretty_window_name
 desired_window = b'0' # the ID of the window selected by the user
 window_name = "" # the full name of the window selected by the user
 pretty_window_name = "" # window_name after being trimmed
-file_destination = expanduser("~")
+file_destination = "" # where window-name.txt will be generated
+preset_file_save = "" # where a preset file will be saved (optional)
+preset_file_open = "" # where to check for a preset file (optional)
 
 ### define funcs
 # retrieve input from user
@@ -117,16 +119,16 @@ def select_window() -> bytes:
     os.system("clear")
     print("ERR: xdotool could not retrieve the ID of the selected window!")
     sys.exit()
-    
-# prompt user for destination folder using zenity
-def ask_for_folder() -> str:
+        
+# prompt user for destination file using zenity
+def ask_for_file(save: bool, file_name: str, file_filter: str, window_title: str) -> str: # fix: file_name is only used when save is True
     _file_destination = ""
     try:
-        _file_destination = subprocess.check_output(["zenity", "--file-selection", "--directory", "--title", "window-name.txt destination"])
+        _file_destination = subprocess.check_output(["zenity", "--file-selection", "--save", "--filename=" + file_name, "--file-filter=" + file_filter, "--confirm-overwrite", "--title", window_title]) if save else subprocess.check_output(["zenity", "--file-selection", "--file-filter=" + file_filter, "--title", window_title])
         _file_destination_sub = _file_destination[:len(_file_destination) - 1]
         return _file_destination_sub.decode("utf-8")
     except:
-        print("ERR: folder could not be found or cancel was pressed. Exiting.")
+        print("ERR: parent folder could not be found or cancel was pressed. Exiting.")
         sys.exit()
 
 ### start
@@ -136,18 +138,48 @@ os.system("clear")
 print("The window with the name \"" + window_name + "\" has been selected.")
 input("Press enter to continue...")
 
-# settings
-sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 0, 9999)
-substring_start = get_input_int_clamped("Should I cut off any starting characters? [0 to skip]> ", 0, len(window_name)) 
-substring_end = get_input_int_clamped("Should I cut off any ending characters? [0 to skip]> ", 0, len(window_name) - substring_start)
-prefix = get_input("Should I add any text before the window title? [leave blank to skip]> ")
-suffix = get_input("Should I add any text after the window title? [leave blank to skip]> ")
-os.system("clear")
-print("Please select a folder for window-name.txt to be generated...")
-file_destination = ask_for_folder()
-os.system("clear")
-print("window-name.txt will be generated in \"" + file_destination + "\"")
-input("Press enter to start main loop...")
+# ask if preset should be used
+use_preset_response = get_input("Would you like to use a preset? [y/N]> ")
+if (use_preset_response == "y"):
+    preset_file_open = ask_for_file(False, "preset.gura", "*.gura", "Open Preset")
+    print("OPENING " + preset_file_open)
+    ### OPEN preset.gura AND APPLY SETTINGS
+    input("Press enter to start main loop...")
+else:
+    # settings
+    sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 1, 9999)
+    substring_start = get_input_int_clamped("Should I cut off any starting characters? [0 to skip]> ", 0, len(window_name)) 
+    substring_end = get_input_int_clamped("Should I cut off any ending characters? [0 to skip]> ", 0, len(window_name) - substring_start)
+    prefix = get_input("Should I add any text before the window title? [leave blank to skip]> ")
+    suffix = get_input("Should I add any text after the window title? [leave blank to skip]> ")
+    os.system("clear")
+    print("Please select a folder for window-name.txt to be generated...")
+    file_destination = ask_for_file(True, "window-name.txt", "*.txt", "window-name.txt destination")
+    os.system("clear")
+    print("window-name.txt will be generated at \"" + file_destination + "\"")
+    input("Press enter to continue...")
+
+    # save to profile (if accepted)
+    os.system("clear")
+    save_response = get_input("Would you like to save these settings as a preset? [y/N]> ")
+    if (save_response == "y"):
+        preset_file_save = ask_for_file(True, "preset.gura", "*.gura", "Save Preset")
+        print("Save at :\"" + preset_file_save + "\"")
+        try:
+            # print preset to file
+            file = open(preset_file_save, "w")
+            file.write(str(sleep_time) + "\n")
+            file.write(str(substring_start) + "\n")
+            file.write(str(substring_end) + "\n")
+            file.write(prefix + "\n")
+            file.write(suffix + "\n")
+            file.write(file_destination + "\n")
+            file.close()
+        except:
+            print("ERR: failed to print preset to file.")
+            sys.exit()
+        print("Saved preset to \"" + preset_file_save + "\"")
+        input("Press enter to start main loop...")
 
 # main loop
 while (running):
@@ -159,7 +191,7 @@ while (running):
     print("Released under GPL3 with ABSOLUTELY NO WARRANTY")
     print("To stop window-name-to-file, press ctrl+c")
     print()
-    print("Printing to \"" + file_destination + "/window-name.txt\"")
+    print("Printing to \"" + file_destination + "\"")
     print()
     # update window_name, pretty_window_name, and inform the user of what it has potentially changed to
     window_name = get_window_name(desired_window)
@@ -167,12 +199,12 @@ while (running):
     print("The selected window's name is currently \"" + pretty_window_name + "\"")
     time.sleep(sleep_time - 0.3)
     try:
-        # print to file
-        file = open(file_destination + "/window-name.txt", "w")
+        # print window name to file
+        file = open(file_destination, "w")
         file.write(pretty_window_name)
         file.close()
     except:
-        print("ERR: failed to print to file.")
+        print("ERR: failed to print window name to file.")
         sys.exit()
     print()
     print("Printed to file.")
