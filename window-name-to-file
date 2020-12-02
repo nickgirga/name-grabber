@@ -58,7 +58,7 @@ def get_input_int(prompt: str) -> int:
             os.system("clear")
             print("\"" + user_input + "\" is not a valid integer. This field only accepts integers.")
             input("Press enter to continue...")
-            
+
 # get_input_int but with minimum and maximum limits
 def get_input_int_clamped(prompt: str, minimum: int, maximum: int):
     while (True):
@@ -119,7 +119,7 @@ def select_window() -> bytes:
     os.system("clear")
     print("ERR: xdotool could not retrieve the ID of the selected window!")
     sys.exit()
-        
+
 # prompt user for destination file using zenity
 def ask_for_file(save: bool, file_name: str, file_filter: str, window_title: str) -> str: # fix: file_name is only used when save is True
     _file_destination = ""
@@ -142,8 +142,22 @@ input("Press enter to continue...")
 use_preset_response = get_input("Would you like to use a preset? [y/N]> ")
 if (use_preset_response == "y"):
     preset_file_open = ask_for_file(False, "preset.gura", "*.gura", "Open Preset")
-    print("OPENING " + preset_file_open)
-    ### OPEN preset.gura AND APPLY SETTINGS
+    print("Opening \"" + preset_file_open + "\"...")
+    try:
+        # open preset file
+        file = open(preset_file_open, "r")
+        lines = file.readlines()
+        sleep_time = lines[0] # NEEDS PARSING
+        substring_start = lines[1] # NEEDS PARSING
+        substring_end = lines[2] # NEEDS PARSING
+        prefix = lines[3]
+        suffix = lines[4]
+        file_destination = lines[5]
+    except:
+        print("ERR: failed to open preset file.")
+        sys.exit()
+    os.system("clear")
+    print("Using settings from \"" + preset_file_open + "\"")
     input("Press enter to start main loop...")
 else:
     # settings
