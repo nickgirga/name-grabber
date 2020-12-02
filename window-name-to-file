@@ -17,7 +17,6 @@
 #      method of displaying "Printed to file" would not function correctly without whole numbers)
 
 ### imports
-from os.path import expanduser
 import subprocess
 import time
 import sys
