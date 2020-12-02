@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # window-name-to-file
-# Version 2.1
+# Version 2.5
 # Nicholas Girga
 # Released under GPL3 with ABSOLUTELY NO WARRANTY
 
@@ -199,7 +199,7 @@ while (running):
     os.system("clear")
     # print license info
     print("window-name-to-file is running...")
-    print("Version 2.1")
+    print("Version 2.5")
     print("Created by Nicholas Girga")
     print("Released under GPL3 with ABSOLUTELY NO WARRANTY")
     print("To stop window-name-to-file, press ctrl+c")
