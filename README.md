@@ -23,4 +23,5 @@ Once the main loop starts, it will echo the `window-name.txt` location, the curr
 
 At any point in time—running or not—it is actually safe to delete `window-name.txt`. Data is only ever written TO this file, so if it gets deleted, a new one will be created upon the next iteration of the main loop. How long that is depends on your defined sleep time. Just make sure you have stopped monitoring `window-name.txt` with external programs. Those programs probably will throw a fit if you told them to read a file and it just disappears.
 
+Demonstration of presets feature:
 [![youtube_thumbnail.png](.screenshots/youtube_thumbnail.png)](https://www.youtube.com/watch?v=XuiMx7THL8g "View on YouTube")
