@@ -147,12 +147,12 @@ if (use_preset_response == "y"):
         # open preset file
         file = open(preset_file_open, "r")
         lines = file.readlines()
-        sleep_time = lines[0] # NEEDS PARSING
-        substring_start = lines[1] # NEEDS PARSING
-        substring_end = lines[2] # NEEDS PARSING
-        prefix = lines[3]
-        suffix = lines[4]
-        file_destination = lines[5]
+        sleep_time = int(lines[0][:len(lines[0]) - 1])
+        substring_start = int(lines[1][:len(lines[1]) - 1])
+        substring_end = int(lines[2][:len(lines[2]) - 1])
+        prefix = lines[3][:len(lines[3]) - 1]
+        suffix = lines[4][:len(lines[4]) - 1]
+        file_destination = lines[5][:len(lines[5]) - 1]
     except:
         print("ERR: failed to open preset file.")
         sys.exit()
@@ -160,7 +160,7 @@ if (use_preset_response == "y"):
     print("Using settings from \"" + preset_file_open + "\"")
     input("Press enter to start main loop...")
 else:
-    # settings
+    # ask for settings
     sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 1, 9999)
     substring_start = get_input_int_clamped("Should I cut off any starting characters? [0 to skip]> ", 0, len(window_name)) 
     substring_end = get_input_int_clamped("Should I cut off any ending characters? [0 to skip]> ", 0, len(window_name) - substring_start)
@@ -178,7 +178,6 @@ else:
     save_response = get_input("Would you like to save these settings as a preset? [y/N]> ")
     if (save_response == "y"):
         preset_file_save = ask_for_file(True, "preset.gura", "*.gura", "Save Preset")
-        print("Save at :\"" + preset_file_save + "\"")
         try:
             # print preset to file
             file = open(preset_file_save, "w")
