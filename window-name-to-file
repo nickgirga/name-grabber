@@ -138,27 +138,8 @@ print("The window with the name \"" + window_name + "\" has been selected.")
 input("Press enter to continue...")
 
 # ask if preset should be used
-use_preset_response = get_input("Would you like to use a preset? [y/N]> ")
-if (use_preset_response == "y"):
-    preset_file_open = ask_for_file(False, "preset.gura", "*.gura", "Open Preset")
-    print("Opening \"" + preset_file_open + "\"...")
-    try:
-        # open preset file
-        file = open(preset_file_open, "r")
-        lines = file.readlines()
-        sleep_time = int(lines[0][:len(lines[0]) - 1])
-        substring_start = int(lines[1][:len(lines[1]) - 1])
-        substring_end = int(lines[2][:len(lines[2]) - 1])
-        prefix = lines[3][:len(lines[3]) - 1]
-        suffix = lines[4][:len(lines[4]) - 1]
-        file_destination = lines[5][:len(lines[5]) - 1]
-    except:
-        print("ERR: failed to open preset file.")
-        sys.exit()
-    os.system("clear")
-    print("Using settings from \"" + preset_file_open + "\"")
-    input("Press enter to start main loop...")
-else:
+use_preset_response = get_input("Would you like to use a preset? [Y/n]> ")
+if (use_preset_response == "n"):
     # ask for settings
     sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 1, 9999)
     substring_start = get_input_int_clamped("Should I cut off any starting characters? [0 to skip]> ", 0, len(window_name)) 
@@ -192,6 +173,25 @@ else:
             sys.exit()
         print("Saved preset to \"" + preset_file_save + "\"")
         input("Press enter to start main loop...")
+else:
+    preset_file_open = ask_for_file(False, "preset.gura", "*.gura", "Open Preset")
+    print("Opening \"" + preset_file_open + "\"...")
+    try:
+        # open preset file
+        file = open(preset_file_open, "r")
+        lines = file.readlines()
+        sleep_time = int(lines[0][:len(lines[0]) - 1])
+        substring_start = int(lines[1][:len(lines[1]) - 1])
+        substring_end = int(lines[2][:len(lines[2]) - 1])
+        prefix = lines[3][:len(lines[3]) - 1]
+        suffix = lines[4][:len(lines[4]) - 1]
+        file_destination = lines[5][:len(lines[5]) - 1]
+    except:
+        print("ERR: failed to open preset file.")
+        sys.exit()
+    os.system("clear")
+    print("Using settings from \"" + preset_file_open + "\"")
+    input("Press enter to start main loop...")
 
 # main loop
 while (running):
