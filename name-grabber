@@ -125,10 +125,12 @@ class Main:
         
     # quit with cancel
     def on_window0_destroy(self, object, data=None):
+        self.main_loop_running = False
         Gtk.main_quit()
 
     # quit from menu
     def on_gtk_quit_activate(self, menuitem, data=None):
+        self.main_loop_running = False
         Gtk.main_quit()
        
     # called when the value of crop_start_value has changed
