@@ -50,6 +50,9 @@ def get_window_name(window: bytes) -> str:
 
 ### define main class
 class Main:
+    # define consts
+    DELAY_BAR_STEP = 500.0
+    
     # define vars
     window_selected = False
     desired_window = b'0'
@@ -135,11 +138,6 @@ class Main:
         self.update_output_displays()
         self.update_max_crop_values()
         
-    # called when the value of delay_value has changed
-    def delay_value_value_changed(self, object, data=None):
-        print("delay_value has changed")
-        # to-do: fill with logic
-        
     # called when the text in the prefix_textbox has changed
     def prefix_textbox_changed(self, object, data=None):
         self.update_output_displays()
@@ -182,12 +180,21 @@ class Main:
         
     # the main loop; responsible for updating window name information and printing it to a file
     def main_loop(self):
+        delay_bar = self.builder.get_object("delay_bar")
+        
         while (self.main_loop_running):
             self.update_output_displays()
             # to-do: print to file
             # to-do: update progress bar with sleep
             self.delay = self.builder.get_object("delay_value").get_property("value")
-            time.sleep(self.delay)
+            _micro_delay = self.delay / self.DELAY_BAR_STEP
+            for i in range(0, int(self.DELAY_BAR_STEP)):
+                time.sleep(_micro_delay)
+                delay_bar.set_property("value", delay_bar.get_property("value") + (1.0 / self.DELAY_BAR_STEP))
+                if (not self.main_loop_running):
+                    delay_bar.set_property("value", 0.0)
+                    return
+            delay_bar.set_property("value", 0.0)
         
 ### start
 # create main instance
