@@ -1,6 +1,6 @@
-#!/usr/bin/bash
+#!/usr/bin/python
 # window-name-to-file
-# Version 1.0
+# Version 2.5
 # Nicholas Girga
 # Released under GPL3 with ABSOLUTELY NO WARRANTY
 
@@ -10,63 +10,214 @@
 # methods fail.
 
 # to-do:
-#    - ask for substring start and end
 #    - check for runtime deps at start and install if needed
 #    - create an elegant quit function that doesn't rely on KB interrupts
-#    - allow floating point numbers for sleep_time
-#    - verify window existence before updating window_name and printing it to a file
 #    - create GUI
+#    - allow floating point numbers for sleep_time (this requires real GUI first; the current
+#      method of displaying "Printed to file" would not function correctly without whole numbers)
 
-# define vars
-running=true # determines if the main loop should keep iterating
+### imports
+import subprocess
+import time
+import sys
+import os
 
-# define funcs
-function is_int() { return $(test "$@" -eq "$@" > /dev/null 2>&1); } # check if integer
+### define vars
+running = True # determines if the main loop should keep iterating
+sleep_time = 1 # the time to sleep inbetween each iteration of the main loop
+substring_start = 0 # how much of the start should be cut from window_name
+substring_end = 0 # how much of the end should be cut from window_name
+prefix = "" # added before window_name in pretty_window_name
+suffix = "" # added after window_name in pretty_window_name
+desired_window = b'0' # the ID of the window selected by the user
+window_name = "" # the full name of the window selected by the user
+pretty_window_name = "" # window_name after being trimmed
+file_destination = "" # where window-name.txt will be generated
+preset_file_save = "" # where a preset file will be saved (optional)
+preset_file_open = "" # where to check for a preset file (optional)
 
-# get the desired window's ID based on what the user clicks
-clear
-echo Please click a window to select it... \(waiting - ctrl+c to exit\)
-desired_window=`xdotool selectwindow`
-window_name=`xdotool getwindowname $desired_window`
-clear
-echo The window with the name \"$window_name\" has been selected.
-read -p "Press enter to continue..."
+### define funcs
+# retrieve input from user
+def get_input(prompt: str) -> str:
+    os.system("clear")
+    user_input = input(prompt)
+    return user_input
 
-# ask for the time to sleep inbetween each iteration of the main loop
-while true
-do
-    clear
-    read -p "How often should the file update? [seconds]> " sleep_time
-    if $(is_int "${sleep_time}"); then
-        # leave the validation loop if the user enters an integer
-        break
-    else
-        # report to the user if the entered value was not an integer
-        clear
-        echo "\"${sleep_time}\" is not an integer. This field only accepts integers."
-        read -p "Press enter to continue..."
-    fi
-done
+# retrieve input (integer only) from the user
+def get_input_int(prompt: str) -> int:
+    # start a validation loop
+    while (True):
+        user_input = get_input(prompt)
+        try:
+            # try converting to integer
+            user_input_int = int(user_input)
+            return user_input_int
+        except ValueError:
+            # report that user_input is not valid and allow loop to continue
+            os.system("clear")
+            print("\"" + user_input + "\" is not a valid integer. This field only accepts integers.")
+            input("Press enter to continue...")
 
-# loop responsible for updating file
-while $running
-do
-    clear
-    echo window-name-to-file is running...
-    echo Version 1.0
-    echo Created by Nicholas Girga
-    echo Released under GPL3 with ABSOLUTELY NO WARRANTY
-    echo To stop window-name-to-file, press ctrl+c
-    echo
-    echo Printing to \"`pwd`\/window-name.txt\"
-    echo
-    # update window_name
-    window_name=`xdotool getwindowname $desired_window`
-    echo The selected window\'s name is currently \"$window_name\"
-    sleep $sleep_time
-    echo
-    # print window_name to "window-name.txt" in the working directory
-    echo $window_name > window-name.txt
-    echo Printed to file.
-    sleep 0.1
-done
+# get_input_int but with minimum and maximum limits
+def get_input_int_clamped(prompt: str, minimum: int, maximum: int):
+    while (True):
+        user_input_int = get_input_int(prompt)
+        if (minimum <= user_input_int and user_input_int <= maximum):
+            # return if user_input is valid
+            return user_input_int
+        else:
+            # report that user_input is out of range and allow loop to continue
+            os.system("clear")
+            print("\"" + str(user_input_int) + "\" is not within the range of this field. The range is " + str(minimum) + "-" + str(maximum))
+            input("Press enter to continue...")
+
+# returns the name of the window that has been passed in
+def get_window_name(window: bytes) -> str:
+    _window_name = ""
+
+    try:
+        # try to call xdotool
+        _window_name = subprocess.check_output(["xdotool", "getwindowname", str(int(desired_window))])
+    except:
+        # exit window-name-to-file if xdotool acts funny
+        os.system("clear")
+        print("ERR: xdotool could not retrieve the name of the window with the id \"" + str(int(desired_window)) + "\"")
+        sys.exit()
+
+    try:
+        # clip off the end-line (\n) from _window_name
+        _window_name_sub = _window_name[:len(_window_name) - 1]
+        # decode _window_name_sub from bytes to string and return it
+        return _window_name_sub.decode("utf-8")
+    except:
+        # report failure of decode
+        os.system("clear")
+        print("ERR: failed to decode response from xdotool: \"" + str(_window_name) + "\"")
+        sys.exit()
+
+# select a window using xdotool
+def select_window() -> bytes:
+    _desired_window = ""
+
+    os.system("clear")
+    print("Please click a window to select it... (waiting - ctrl+c to exit)")
+
+    try:
+        # try to call xdotool
+        _desired_window = subprocess.check_output(["xdotool", "selectwindow"])
+    except:
+        # exit window-name-to-file if xdotool acts funny
+        os.system("clear")
+        print("ERR: xdotool could not retrieve the ID of the selected window!")
+        sys.exit()
+    # return if _desired_window is of the type 'bytes'
+    if (isinstance(_desired_window, bytes)):
+        return _desired_window
+
+    # exit if _desired_window is not of the type 'bytes'
+    os.system("clear")
+    print("ERR: xdotool could not retrieve the ID of the selected window!")
+    sys.exit()
+
+# prompt user for destination file using zenity
+def ask_for_file(save: bool, file_name: str, file_filter: str, window_title: str) -> str: # fix: file_name is only used when save is True
+    _file_destination = ""
+    try:
+        _file_destination = subprocess.check_output(["zenity", "--file-selection", "--save", "--filename=" + file_name, "--file-filter=" + file_filter, "--confirm-overwrite", "--title", window_title]) if save else subprocess.check_output(["zenity", "--file-selection", "--file-filter=" + file_filter, "--title", window_title])
+        _file_destination_sub = _file_destination[:len(_file_destination) - 1]
+        return _file_destination_sub.decode("utf-8")
+    except:
+        print("ERR: parent folder could not be found or cancel was pressed. Exiting.")
+        sys.exit()
+
+### start
+desired_window = select_window() # ask for desired_window
+window_name = get_window_name(desired_window) # fetch the name of desired_window
+os.system("clear")
+print("The window with the name \"" + window_name + "\" has been selected.")
+input("Press enter to continue...")
+
+# ask if preset should be used
+use_preset_response = get_input("Would you like to use a preset? [Y/n]> ")
+if (use_preset_response == "n"):
+    # ask for settings
+    sleep_time = get_input_int_clamped("How often should the file update? [seconds]> ", 1, 9999)
+    substring_start = get_input_int_clamped("Should I cut off any starting characters? [0 to skip]> ", 0, len(window_name)) 
+    substring_end = get_input_int_clamped("Should I cut off any ending characters? [0 to skip]> ", 0, len(window_name) - substring_start)
+    prefix = get_input("Should I add any text before the window title? [leave blank to skip]> ")
+    suffix = get_input("Should I add any text after the window title? [leave blank to skip]> ")
+    os.system("clear")
+    print("Please select a folder for window-name.txt to be generated...")
+    file_destination = ask_for_file(True, "window-name.txt", "*.txt", "window-name.txt destination")
+    os.system("clear")
+    print("window-name.txt will be generated at \"" + file_destination + "\"")
+    input("Press enter to continue...")
+
+    # save to profile (if accepted)
+    os.system("clear")
+    save_response = get_input("Would you like to save these settings as a preset? [y/N]> ")
+    if (save_response == "y"):
+        preset_file_save = ask_for_file(True, "preset.gura", "*.gura", "Save Preset")
+        try:
+            # print preset to file
+            file = open(preset_file_save, "w")
+            file.write(str(sleep_time) + "\n")
+            file.write(str(substring_start) + "\n")
+            file.write(str(substring_end) + "\n")
+            file.write(prefix + "\n")
+            file.write(suffix + "\n")
+            file.write(file_destination + "\n")
+            file.close()
+        except:
+            print("ERR: failed to print preset to file.")
+            sys.exit()
+        print("Saved preset to \"" + preset_file_save + "\"")
+        input("Press enter to start main loop...")
+else:
+    preset_file_open = ask_for_file(False, "preset.gura", "*.gura", "Open Preset")
+    print("Opening \"" + preset_file_open + "\"...")
+    try:
+        # open preset file
+        file = open(preset_file_open, "r")
+        lines = file.readlines()
+        sleep_time = int(lines[0][:len(lines[0]) - 1])
+        substring_start = int(lines[1][:len(lines[1]) - 1])
+        substring_end = int(lines[2][:len(lines[2]) - 1])
+        prefix = lines[3][:len(lines[3]) - 1]
+        suffix = lines[4][:len(lines[4]) - 1]
+        file_destination = lines[5][:len(lines[5]) - 1]
+    except:
+        print("ERR: failed to open preset file.")
+        sys.exit()
+    os.system("clear")
+    print("Using settings from \"" + preset_file_open + "\"")
+    input("Press enter to start main loop...")
+
+# main loop
+while (running):
+    os.system("clear")
+    # print license info
+    print("window-name-to-file is running...")
+    print("Version 2.5")
+    print("Created by Nicholas Girga")
+    print("Released under GPL3 with ABSOLUTELY NO WARRANTY")
+    print("To stop window-name-to-file, press ctrl+c")
+    print()
+    print("Printing to \"" + file_destination + "\"")
+    print()
+    # update window_name, pretty_window_name, and inform the user of what it has potentially changed to
+    window_name = get_window_name(desired_window)
+    pretty_window_name = prefix + window_name[substring_start:len(window_name) - substring_end] + suffix
+    print("The selected window's name is currently \"" + pretty_window_name + "\"")
+    time.sleep(sleep_time - 0.3)
+    try:
+        # print window name to file
+        file = open(file_destination, "w")
+        file.write(pretty_window_name)
+        file.close()
+    except:
+        print("ERR: failed to print window name to file.")
+        sys.exit()
+    print()
+    print("Printed to file.")
+    time.sleep(0.3)

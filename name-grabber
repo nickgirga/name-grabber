@@ -1,0 +1,195 @@
+#!/usr/bin/python
+
+### imports
+import gi, os, sys, time, subprocess
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+from threading import Thread
+
+### define funcs
+# select a window using xdotool
+def select_window() -> bytes:
+    _desired_window = ""
+
+    try:
+        # try to call xdotool
+        _desired_window = subprocess.check_output(["xdotool", "selectwindow"])
+    except Exception as e:
+        # exit window-name-to-file if xdotool acts funny
+        print("ERR: xdotool could not retrieve the ID of the selected window!\n" + str(e))
+        return _desired_window
+    # return if _desired_window is of the type 'bytes'
+    if (isinstance(_desired_window, bytes)):
+        return _desired_window
+
+    # exit if _desired_window is not of the type 'bytes'
+    print("ERR: xdotool could not retrieve the ID of the selected window!")
+    return _desired_window
+    
+# returns the name of the window that has been passed in
+def get_window_name(window: bytes) -> str:
+    _window_name = ""
+
+    try:
+        # try to call xdotool
+        _window_name = subprocess.check_output(["xdotool", "getwindowname", str(int(window))])
+    except Exception as e:
+        # exit window-name-to-file if xdotool acts funny
+        print("ERR: xdotool could not retrieve the name of the window with the id \"" + str(int(window)) + "\"\n" + str(e))
+        sys.exit()
+
+    try:
+        # clip off the end-line (\n) from _window_name
+        _window_name_sub = _window_name[:len(_window_name) - 1]
+        # decode _window_name_sub from bytes to string and return it
+        return _window_name_sub.decode("utf-8")
+    except Exception as e:
+        # report failure of decode
+        print("ERR: failed to decode response from xdotool: \"" + str(_window_name) + "\"\n" + str(e))
+        sys.exit()
+
+### define main class
+class Main:
+    # define vars
+    window_selected = False
+    desired_window = b'0'
+    window_name = ""
+    pretty_window_name = ""
+    delay = 1.0
+    main_loop_running = False
+    main_loop_thread = Thread()
+
+    # initialize glade file
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.gladefile = "main.glade"
+        self.builder = Gtk.Builder()
+        self.builder.add_from_file(self.gladefile)
+        self.builder.connect_signals(self)
+        self.window = self.builder.get_object("window0")
+        self.window.present()
+        
+    # only to be called after a window is selected; allows user to edit settings
+    def enable_settings(self):
+        # get widgets
+        settings_pane = self.builder.get_object("settings_pane")
+        update_file_button = self.builder.get_object("update_file_button")
+        open_preset_button = self.builder.get_object("open_preset_button")
+        save_preset_button = self.builder.get_object("save_preset_button")
+        
+        # enable widgets
+        settings_pane.set_property("sensitive", True)
+        update_file_button.set_property("sensitive", True)
+        open_preset_button.set_property("sensitive", True)
+        save_preset_button.set_property("sensitive", True)
+        
+        # change tooltips
+        settings_pane.set_tooltip_text("")
+        update_file_button.set_tooltip_text("")
+        open_preset_button.set_tooltip_text("")
+        save_preset_button.set_tooltip_text("")
+    
+    # makes sure that output_display0 and output_display1 has up-to-date information
+    def update_output_displays(self):
+        # get settings
+        self.window_name = get_window_name(self.desired_window)
+        crop_start = int(self.builder.get_object("crop_start_value").get_property("value"))
+        crop_end = int(self.builder.get_object("crop_end_value").get_property("value"))
+        prefix = self.builder.get_object("prefix_textbox").get_property("text")
+        suffix = self.builder.get_object("suffix_textbox").get_property("text")
+        
+        # change text in output_display0 and output_display1 based on settings
+        self.pretty_window_name = prefix + self.window_name[crop_start:len(self.window_name) - crop_end] + suffix
+        self.builder.get_object("output_display0").set_property("text", self.pretty_window_name)
+        self.builder.get_object("output_display1").set_property("text", self.pretty_window_name)
+        
+    # ensures you don't over crop by updating max values
+    def update_max_crop_values(self):
+        # get value objects
+        crop_start_value_obj = self.builder.get_object("crop_start_value")
+        crop_end_value_obj = self.builder.get_object("crop_end_value")
+        
+        # get current values
+        crop_start_value = crop_start_value_obj.get_property("value")
+        crop_end_value = crop_end_value_obj.get_property("value")
+        
+        # update max values
+        crop_start_value_obj.set_property("upper", len(self.window_name) - crop_end_value - 1)
+        crop_end_value_obj.set_property("upper", len(self.window_name) - crop_start_value - 1)
+        
+    # quit with cancel
+    def on_window0_destroy(self, object, data=None):
+        Gtk.main_quit()
+
+    # quit from menu
+    def on_gtk_quit_activate(self, menuitem, data=None):
+        Gtk.main_quit()
+       
+    # called when the value of crop_start_value has changed
+    def crop_start_value_changed(self, object, data=None):
+        self.update_output_displays()
+        self.update_max_crop_values()
+        
+    # called when the value of crop_end_value has changed
+    def crop_end_value_changed(self, object, data=None):
+        self.update_output_displays()
+        self.update_max_crop_values()
+        
+    # called when the value of delay_value has changed
+    def delay_value_value_changed(self, object, data=None):
+        print("delay_value has changed")
+        # to-do: fill with logic
+        
+    # called when the text in the prefix_textbox has changed
+    def prefix_textbox_changed(self, object, data=None):
+        self.update_output_displays()
+        
+    # called when the text in the suffix_textbox has changed
+    def suffix_textbox_changed(self, object, data=None):
+        self.update_output_displays()
+        
+    # called when update_file_button is toggled
+    def update_file_button_toggled(self, object, data=None):
+        if (object.get_property("active")):
+            self.main_loop_running = True
+            main_loop_thread = Thread(target=self.main_loop)
+            main_loop_thread.start()
+        else:
+            self.main_loop_running = False
+        
+    # called when select_window_button is toggled
+    def select_window_button_toggled(self, object, data=None):
+        if (object.get_property("active")):
+            self.desired_window = select_window()
+            if (self.desired_window != ""):
+                self.update_output_displays()
+                self.builder.get_object("window_name_textbox").set_property("text", self.window_name)
+                self.enable_settings()
+                self.builder.get_object("crop_start_value").set_property("value", 0)
+                self.builder.get_object("crop_end_value").set_property("value", 0)
+            object.set_property("active", False)
+        
+    # called when the ok button is clicked in the save dialog
+    def ok_button_clicked(self, object, data=None):
+        print("saved")
+        # to-do: fill with logic
+        
+    # called when the cancel button is clicked in the save dialog
+    def cancel_button_clicked(self, object, data=None):
+        print("cancelled")
+        # to-do: fill with logic
+        
+    # the main loop; responsible for updating window name information and printing it to a file
+    def main_loop(self):
+        while (self.main_loop_running):
+            self.update_output_displays()
+            # to-do: print to file
+            # to-do: update progress bar with sleep
+            self.delay = self.builder.get_object("delay_value").get_property("value")
+            time.sleep(self.delay)
+        
+### start
+# create main instance
+if __name__ == "__main__":
+    main = Main()
+    Gtk.main()

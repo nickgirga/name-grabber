@@ -20,6 +20,7 @@
     <property name="value">1</property>
     <property name="step-increment">0.1</property>
     <property name="page-increment">10</property>
+    <signal name="value-changed" handler="delay_value_value_changed" swapped="no"/>
   </object>
   <object class="GtkImage" id="image1">
     <property name="visible">True</property>
@@ -31,8 +32,17 @@
     <property name="can-focus">False</property>
     <property name="stock">gtk-open</property>
   </object>
-  <object class="GtkWindow">
+  <object class="GtkImage" id="image3">
+    <property name="visible">True</property>
     <property name="can-focus">False</property>
+    <property name="stock">gtk-save-as</property>
+  </object>
+  <object class="GtkWindow" id="window0">
+    <property name="can-focus">False</property>
+    <property name="title" translatable="yes">Name Grabber</property>
+    <property name="default-width">395</property>
+    <property name="default-height">-1</property>
+    <signal name="hide" handler="on_gtk_quit_activate" swapped="no"/>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
@@ -87,6 +97,7 @@
                         <property name="can-focus">False</property>
                         <property name="use-underline">True</property>
                         <property name="use-stock">True</property>
+                        <signal name="activate" handler="on_gtk_quit_activate" swapped="no"/>
                       </object>
                     </child>
                   </object>
@@ -132,14 +143,15 @@
               <object class="GtkEntry" id="window_name_textbox">
                 <property name="height-request">21</property>
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="can-focus">False</property>
-                <property name="margin-left">5</property>
                 <property name="margin-start">5</property>
                 <property name="margin-top">5</property>
                 <property name="margin-bottom">5</property>
                 <property name="editable">False</property>
                 <property name="xalign">0.5</property>
-                <property name="placeholder-text" translatable="yes">Window Name</property>
+                <property name="caps-lock-warning">False</property>
+                <property name="placeholder-text" translatable="yes">$window_name</property>
               </object>
               <packing>
                 <property name="expand">True</property>
@@ -157,6 +169,7 @@
                 <property name="margin-end">5</property>
                 <property name="margin-top">5</property>
                 <property name="margin-bottom">5</property>
+                <signal name="toggled" handler="select_window_button_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -177,7 +190,7 @@
             <property name="visible">True</property>
             <property name="sensitive">False</property>
             <property name="can-focus">True</property>
-            <property name="tooltip-text" translatable="yes">Select a window to change settings</property>
+            <property name="tooltip-text" translatable="yes">Select a window before changing settings</property>
             <child>
               <object class="GtkBox" id="settings_pane_content">
                 <property name="visible">True</property>
@@ -189,10 +202,12 @@
                   <object class="GtkStackSwitcher" id="stack_switcher">
                     <property name="visible">True</property>
                     <property name="can-focus">False</property>
+                    <property name="halign">center</property>
                     <property name="margin-start">5</property>
                     <property name="margin-end">5</property>
                     <property name="margin-top">5</property>
                     <property name="margin-bottom">5</property>
+                    <property name="hexpand">True</property>
                     <property name="stack">stack0</property>
                   </object>
                   <packing>
@@ -296,6 +311,7 @@
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
                                 <property name="adjustment">crop_end_value</property>
+                                <property name="inverted">True</property>
                                 <property name="round-digits">1</property>
                                 <property name="digits">0</property>
                                 <property name="value-pos">right</property>
@@ -340,6 +356,7 @@
                               <object class="GtkEntry" id="output_display0">
                                 <property name="height-request">21</property>
                                 <property name="visible">True</property>
+                                <property name="sensitive">False</property>
                                 <property name="can-focus">False</property>
                                 <property name="valign">center</property>
                                 <property name="margin-end">5</property>
@@ -348,6 +365,8 @@
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
                                 <property name="editable">False</property>
+                                <property name="xalign">0.5</property>
+                                <property name="caps-lock-warning">False</property>
                                 <property name="placeholder-text" translatable="yes">Pretty Window Name</property>
                               </object>
                               <packing>
@@ -409,6 +428,7 @@
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
                                 <property name="placeholder-text" translatable="yes">Window Name Prefix</property>
+                                <signal name="changed" handler="prefix_textbox_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -458,6 +478,7 @@
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
                                 <property name="placeholder-text" translatable="yes">Window Name Suffix</property>
+                                <signal name="changed" handler="suffix_textbox_changed" swapped="no"/>
                               </object>
                               <packing>
                                 <property name="expand">True</property>
@@ -499,12 +520,15 @@
                               <object class="GtkEntry" id="output_display1">
                                 <property name="height-request">21</property>
                                 <property name="visible">True</property>
+                                <property name="sensitive">False</property>
                                 <property name="can-focus">False</property>
                                 <property name="valign">center</property>
                                 <property name="margin-end">5</property>
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
                                 <property name="editable">False</property>
+                                <property name="xalign">0.5</property>
+                                <property name="caps-lock-warning">False</property>
                                 <property name="placeholder-text" translatable="yes">Pretty Window Name</property>
                               </object>
                               <packing>
@@ -577,6 +601,69 @@
                         <property name="position">2</property>
                       </packing>
                     </child>
+                    <child>
+                      <object class="GtkBox" id="file_destination_page_content">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <child>
+                          <object class="GtkLabel" id="file_destination_label">
+                            <property name="visible">True</property>
+                            <property name="can-focus">False</property>
+                            <property name="halign">center</property>
+                            <property name="valign">center</property>
+                            <property name="margin-start">5</property>
+                            <property name="margin-top">5</property>
+                            <property name="margin-bottom">5</property>
+                            <property name="vexpand">True</property>
+                            <property name="label" translatable="yes">File Destination: </property>
+                            <property name="xalign">0</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry">
+                            <property name="visible">True</property>
+                            <property name="sensitive">False</property>
+                            <property name="can-focus">False</property>
+                            <property name="valign">center</property>
+                            <property name="hexpand">True</property>
+                            <property name="vexpand">False</property>
+                          </object>
+                          <packing>
+                            <property name="expand">True</property>
+                            <property name="fill">True</property>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton">
+                            <property name="width-request">21</property>
+                            <property name="height-request">21</property>
+                            <property name="visible">True</property>
+                            <property name="can-focus">True</property>
+                            <property name="receives-default">True</property>
+                            <property name="valign">center</property>
+                            <property name="margin-end">5</property>
+                            <property name="vexpand">True</property>
+                            <property name="image">image3</property>
+                          </object>
+                          <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">True</property>
+                            <property name="position">2</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="name">file_destination_page</property>
+                        <property name="title" translatable="yes">File Destination</property>
+                        <property name="position">3</property>
+                      </packing>
+                    </child>
                   </object>
                   <packing>
                     <property name="expand">False</property>
@@ -628,10 +715,11 @@
                 <property name="sensitive">False</property>
                 <property name="can-focus">True</property>
                 <property name="receives-default">True</property>
-                <property name="tooltip-text" translatable="yes">Select a window to update file</property>
+                <property name="tooltip-text" translatable="yes">Select a window before updating file</property>
                 <property name="margin-end">5</property>
                 <property name="margin-top">5</property>
                 <property name="margin-bottom">5</property>
+                <signal name="toggled" handler="update_file_button_toggled" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -646,6 +734,60 @@
             <property name="fill">True</property>
             <property name="position">3</property>
           </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkFileChooserDialog" id="save_dialog">
+    <property name="can-focus">False</property>
+    <property name="type-hint">dialog</property>
+    <property name="action">save</property>
+    <child internal-child="vbox">
+      <object class="GtkBox">
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox">
+            <property name="can-focus">False</property>
+            <property name="layout-style">end</property>
+            <child>
+              <object class="GtkButton" id="cancel_button">
+                <property name="label" translatable="yes">Cancel</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">False</property>
+                <signal name="clicked" handler="cancel_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="ok_button">
+                <property name="label" translatable="yes">OK</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <signal name="clicked" handler="ok_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
         </child>
       </object>
     </child>
