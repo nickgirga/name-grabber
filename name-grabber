@@ -160,8 +160,9 @@ class Main:
     # called when select_window_button is toggled
     def select_window_button_toggled(self, object, data=None):
         if (object.get_property("active")):
-            self.desired_window = select_window()
-            if (self.desired_window != ""):
+            _desired_window = select_window()
+            if (_desired_window != ""):
+                self.desired_window = _desired_window
                 self.update_output_displays()
                 self.builder.get_object("window_name_textbox").set_property("text", self.window_name)
                 self.enable_settings()
