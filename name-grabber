@@ -54,7 +54,6 @@ class Main:
     DELAY_BAR_STEP = 500.0
     
     # define vars
-    window_selected = False
     desired_window = b'0'
     window_name = ""
     pretty_window_name = ""
@@ -153,12 +152,18 @@ class Main:
         
     # called when update_file_button is toggled
     def update_file_button_toggled(self, object, data=None):
+        delay_spin_button = self.builder.get_object("delay_spin_button")
+        
         if (object.get_property("active")):
+            delay_spin_button.set_property("sensitive", False)
+            delay_spin_button.set_tooltip_text("You must stop updating the file in order to change the delay")
             self.main_loop_running = True
             main_loop_thread = Thread(target=self.main_loop)
             main_loop_thread.start()
         else:
             self.main_loop_running = False
+            delay_spin_button.set_property("sensitive", True)
+            delay_spin_button.set_tooltip_text("")
         
     # called when select_window_button is toggled
     def select_window_button_toggled(self, object, data=None):
