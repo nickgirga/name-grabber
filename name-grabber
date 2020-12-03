@@ -189,7 +189,6 @@ class Main:
         while (self.main_loop_running):
             self.update_displays()
             # to-do: print to file
-            # to-do: update progress bar with sleep
             self.delay = self.builder.get_object("delay_value").get_property("value")
             _micro_delay = self.delay / self.DELAY_BAR_STEP
             for i in range(0, int(self.DELAY_BAR_STEP)):
