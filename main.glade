@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.38.1 -->
+<interface>
+  <requires lib="gtk+" version="3.24"/>
+  <object class="GtkAdjustment" id="crop_end">
+    <property name="upper">100</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkAdjustment" id="crop_start">
+    <property name="upper">100</property>
+    <property name="step-increment">1</property>
+    <property name="page-increment">10</property>
+  </object>
+  <object class="GtkImage" id="image1">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="stock">gtk-save-as</property>
+  </object>
+  <object class="GtkImage" id="image2">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="stock">gtk-open</property>
+  </object>
+  <object class="GtkWindow">
+    <property name="can-focus">False</property>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkMenuBar">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">_File</property>
+                <property name="use-underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label" translatable="yes">Open Preset</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="image">image2</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label" translatable="yes">Save Preset</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="image">image1</property>
+                        <property name="use-stock">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkSeparatorMenuItem">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                      </object>
+                    </child>
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child>
+              <object class="GtkMenuItem">
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">_Help</property>
+                <property name="use-underline">True</property>
+                <child type="submenu">
+                  <object class="GtkMenu">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkImageMenuItem">
+                        <property name="label">gtk-about</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="use-underline">True</property>
+                        <property name="use-stock">True</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkFixed">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+            <child>
+              <object class="GtkEntry">
+                <property name="width-request">500</property>
+                <property name="height-request">21</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-left">5</property>
+                <property name="margin-start">5</property>
+                <property name="margin-top">5</property>
+                <property name="editable">False</property>
+                <property name="xalign">0.5</property>
+                <property name="placeholder-text" translatable="yes">Window Name</property>
+              </object>
+            </child>
+            <child>
+              <object class="GtkToggleButton">
+                <property name="label" translatable="yes">Update File</property>
+                <property name="width-request">100</property>
+                <property name="height-request">21</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="margin-end">5</property>
+                <property name="margin-bottom">5</property>
+              </object>
+              <packing>
+                <property name="x">530</property>
+                <property name="y">215</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLevelBar">
+                <property name="width-request">525</property>
+                <property name="height-request">21</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-start">5</property>
+                <property name="margin-bottom">5</property>
+              </object>
+              <packing>
+                <property name="y">217</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinner">
+                <property name="width-request">24</property>
+                <property name="height-request">24</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="active">True</property>
+              </object>
+              <packing>
+                <property name="x">567</property>
+                <property name="y">188</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="stack1">
+                <property name="width-request">635</property>
+                <property name="height-request">76</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="transition-type">slide-left-right</property>
+                <child>
+                  <object class="GtkFixed">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                    <child>
+                      <object class="GtkLabel" id="crop_start_label">
+                        <property name="width-request">72</property>
+                        <property name="height-request">20</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Crop start: </property>
+                      </object>
+                      <packing>
+                        <property name="x">12</property>
+                        <property name="y">7</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScale" id="crop_start_scale">
+                        <property name="width-request">545</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="adjustment">crop_start</property>
+                        <property name="round-digits">1</property>
+                        <property name="digits">0</property>
+                        <property name="value-pos">right</property>
+                      </object>
+                      <packing>
+                        <property name="x">87</property>
+                        <property name="y">4</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="crop_end_label">
+                        <property name="visible">True</property>
+                        <property name="can-focus">False</property>
+                        <property name="label" translatable="yes">Crop end: </property>
+                      </object>
+                      <packing>
+                        <property name="x">12</property>
+                        <property name="y">48</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkScale" id="crop_start_scale1">
+                        <property name="width-request">545</property>
+                        <property name="visible">True</property>
+                        <property name="can-focus">True</property>
+                        <property name="adjustment">crop_end</property>
+                        <property name="round-digits">0</property>
+                        <property name="digits">0</property>
+                        <property name="value-pos">right</property>
+                      </object>
+                      <packing>
+                        <property name="x">87</property>
+                        <property name="y">43</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="name">crop_page</property>
+                    <property name="title" translatable="yes">Crop</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkFixed">
+                    <property name="visible">True</property>
+                    <property name="can-focus">False</property>
+                  </object>
+                  <packing>
+                    <property name="name">prefix_suffix_page</property>
+                    <property name="title" translatable="yes">Prefix/Suffix</property>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="y">57</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStackSwitcher">
+                <property name="width-request">176</property>
+                <property name="height-request">23</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="stack">stack1</property>
+              </object>
+              <packing>
+                <property name="x">5</property>
+                <property name="y">30</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkToggleButton">
+                <property name="label" translatable="yes">Select Window</property>
+                <property name="width-request">125</property>
+                <property name="visible">True</property>
+                <property name="can-focus">True</property>
+                <property name="receives-default">True</property>
+                <property name="margin-end">5</property>
+                <property name="margin-top">5</property>
+              </object>
+              <packing>
+                <property name="x">505</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="width-request">52</property>
+                <property name="height-request">20</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="label" translatable="yes">Output: </property>
+              </object>
+              <packing>
+                <property name="x">5</property>
+                <property name="y">145</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkEntry">
+                <property name="width-request">575</property>
+                <property name="height-request">21</property>
+                <property name="visible">True</property>
+                <property name="can-focus">False</property>
+                <property name="margin-end">5</property>
+                <property name="editable">False</property>
+                <property name="xalign">0.5</property>
+                <property name="placeholder-text" translatable="yes">Pretty Window Name</property>
+              </object>
+              <packing>
+                <property name="x">55</property>
+                <property name="y">145</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>
