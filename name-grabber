@@ -93,7 +93,7 @@ class Main:
         save_preset_button.set_tooltip_text("")
     
     # makes sure that output_display0 and output_display1 has up-to-date information
-    def update_output_displays(self):
+    def update_displays(self):
         # get settings
         self.window_name = get_window_name(self.desired_window)
         crop_start = int(self.builder.get_object("crop_start_value").get_property("value"))
@@ -105,6 +105,9 @@ class Main:
         self.pretty_window_name = prefix + self.window_name[crop_start:len(self.window_name) - crop_end] + suffix
         self.builder.get_object("output_display0").set_property("text", self.pretty_window_name)
         self.builder.get_object("output_display1").set_property("text", self.pretty_window_name)
+        
+        # update window_name_textbox
+        self.builder.get_object("window_name_textbox").set_property("text", self.window_name)
         
     # ensures you don't over crop by updating max values
     def update_max_crop_values(self):
@@ -130,21 +133,21 @@ class Main:
        
     # called when the value of crop_start_value has changed
     def crop_start_value_changed(self, object, data=None):
-        self.update_output_displays()
+        self.update_displays()
         self.update_max_crop_values()
         
     # called when the value of crop_end_value has changed
     def crop_end_value_changed(self, object, data=None):
-        self.update_output_displays()
+        self.update_displays()
         self.update_max_crop_values()
         
     # called when the text in the prefix_textbox has changed
     def prefix_textbox_changed(self, object, data=None):
-        self.update_output_displays()
+        self.update_displays()
         
     # called when the text in the suffix_textbox has changed
     def suffix_textbox_changed(self, object, data=None):
-        self.update_output_displays()
+        self.update_displays()
         
     # called when update_file_button is toggled
     def update_file_button_toggled(self, object, data=None):
@@ -161,8 +164,7 @@ class Main:
             _desired_window = select_window()
             if (_desired_window != ""):
                 self.desired_window = _desired_window
-                self.update_output_displays()
-                self.builder.get_object("window_name_textbox").set_property("text", self.window_name)
+                self.update_displays()
                 self.enable_settings()
                 self.builder.get_object("crop_start_value").set_property("value", 0)
                 self.builder.get_object("crop_end_value").set_property("value", 0)
@@ -183,7 +185,7 @@ class Main:
         delay_bar = self.builder.get_object("delay_bar")
         
         while (self.main_loop_running):
-            self.update_output_displays()
+            self.update_displays()
             # to-do: print to file
             # to-do: update progress bar with sleep
             self.delay = self.builder.get_object("delay_value").get_property("value")
