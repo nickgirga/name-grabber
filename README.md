@@ -8,9 +8,10 @@ This program simply creates/updates `window-name.txt` in the specified directory
 You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. If you would prefer to just download the needed files, just grab `name-grabber` and `main.glade`.
 
 # Dependencies
- - [python by the Python Software Foundation](https://www.python.org/)
- - [xdotool by Jordan Sissel](https://github.com/jordansissel/xdotool)
- - [zenity by GNOME](https://gitlab.gnome.org/GNOME/zenity)
+ - [Python](https://www.python.org/)
+ - [PyGObject](https://pypi.org/project/PyGObject/)
+ - [xdotool](https://github.com/jordansissel/xdotool)
+ - *any dependencies that the dependencies above require*
 
 # Installation
 It should already be, but make sure the `name-grabber` file has the ability to be executed. There should be a checkbox for that in the file properties depending on your desktop environment and the file manager you use. If there is not one, you can make it executable by opening a terminal in the directory containing `name-grabber` and running `chmod +x name-grabber`. After that is done, you should be able to launch it by running `./name-grabber`. You must make sure `name-grabber` is being run with `main.glade` in the same folder.
