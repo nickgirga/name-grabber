@@ -1,7 +1,8 @@
 # Name Grabber
 This program simply creates/updates `window-name.txt` in the specified directory at the interval of time that you set. This was intended to be used with OBS to update labels that show what music is playing in the web browser when all other methods fail.
 
-![screenshot_0.png](.screenshots/screenshot_1.png)
+![screenshot_3.png](.screenshots/screenshot_3.png)
+![screenshot_4.png](.screenshots/screenshot_4.png)
 
 # Obtaining
 You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. If you would prefer to just download the needed files, just grab `name-grabber` and `main.glade`.
