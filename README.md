@@ -5,7 +5,7 @@ This program simply creates/updates `window-name.txt` in the specified directory
 ![screenshot_4.png](.screenshots/screenshot_4.png)
 
 # Obtaining
-You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. If you prefer to only grab needed files, download `name-grabber` and `main.glade`
+You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. If you prefer to only grab needed files, download `name-grabber` and `main.glade`. This is enough to run the program, but if you wish to install it, you will need the `install.sh` script. Probably not a bad idea to grab the `uninstall.sh` script as well if you intend to install it.
 
 # Dependencies
  - [Python](https://www.python.org/)
@@ -14,7 +14,9 @@ You can clone the repository by running `git clone https://gitlab.com/nickgirga/
  - *any dependencies that the dependencies above require*
 
 # Installation
-It should already be, but make sure `name-grabber` has the ability to be executed. There should be a checkbox for that in the file properties depending on your desktop environment and the file manager you use. If there is not one, you can make it executable by opening a terminal in the directory containing our script and running `chmod +x name-grabber`. After that is done, you should be able to launch it by running `./name-grabber`.
+Make sure you have `sudo` installed and then run `./install.sh` in the same working directory that contains `name-grabber` and `main.glade`. This will place the resource files in `/usr/share/name-grabber` and create a link to the executable from `/usr/bin/name-grabber`. After the installer spits out `Installation complete!`, you can run `name-grabber` from anywhere. A launcher icon is currently being worked on, but has not been implemented yet.
+
+If you do not have `sudo` installed and/or do not wish to install it, you can modify the script and remove all uses of `sudo` and simply run the script as the superuser using `su`.
 
 # Usage
 Before doing anything, you must select a window. Name Grabber won't let you do anything until a window is selected. Click `Select Window` and click the window you wish to monitor. After selecting a window, you can use the `Settings` expansion panel to change settings like how many characters to clip off the start or end, if any text should be added before or after, how long the delay for updating the file should be, and what file to save the window name to. After choosing the optimal settings for you music source, you can click `File` > `Save Preset` to save the settings as a preset for future use. Then click `Update File` to begin updating the file constantly.
