@@ -40,6 +40,7 @@
   <object class="GtkWindow" id="window0">
     <property name="can-focus">False</property>
     <property name="title" translatable="yes">Name Grabber</property>
+    <property name="resizable">False</property>
     <property name="default-width">395</property>
     <property name="default-height">-1</property>
     <signal name="hide" handler="on_gtk_quit_activate" swapped="no"/>

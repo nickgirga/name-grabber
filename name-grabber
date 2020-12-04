@@ -20,6 +20,7 @@ from os.path import expanduser
 class Main:
     # define consts
     DELAY_BAR_STEP = 500.0
+    DEFAULT_FILE_DESTINATION = expanduser("~") + "/window-name.txt"
     GLADE_FILE_PATH = "/usr/share/name-grabber/main.glade"
     
     # define vars
@@ -30,7 +31,7 @@ class Main:
     prefix = ""
     suffix = ""
     pretty_window_name = ""
-    file_destination = expanduser("~") + "/window-name.txt"
+    file_destination = DEFAULT_FILE_DESTINATION
     delay = 1.0
     main_loop_running = False
     main_loop_thread = Thread()
@@ -177,9 +178,6 @@ class Main:
         open_preset_button = self.builder.get_object("open_preset_button")
         save_preset_button = self.builder.get_object("save_preset_button")
         
-        # collapse settings_pane
-        settings_pane.set_property("expanded", False)
-        
         # disable widgets
         settings_pane.set_property("sensitive", False)
         update_file_button.set_property("sensitive", False)
@@ -191,6 +189,25 @@ class Main:
         update_file_button.set_tooltip_text("Select a window before updating file")
         open_preset_button.set_tooltip_text("Select a window before opening a preset")
         save_preset_button.set_tooltip_text("Select a window before saving a preset")
+        
+        # update settings widgets
+        self.builder.get_object("delay_value").set_property("value", 1.0)
+        self.builder.get_object("crop_start_value").set_property("value", 0)
+        self.builder.get_object("crop_end_value").set_property("value", 0)
+        self.builder.get_object("prefix_textbox").set_property("text", "")
+        self.builder.get_object("suffix_textbox").set_property("text", "")
+        self.builder.get_object("file_destination_textbox").set_property("text", self.DEFAULT_FILE_DESTINATION)
+        
+        # verify settings are loaded into vars
+        self.delay = 1.0
+        self.crop_start = 0
+        self.crop_end = 0
+        self.prefix = ""
+        self.suffix = ""
+        self.file_destination = self.DEFAULT_FILE_DESTINATION
+    
+        # collapse settings_pane
+        settings_pane.set_property("expanded", False)
     
     # makes sure that output_display has up-to-date information
     def update_display(self):
