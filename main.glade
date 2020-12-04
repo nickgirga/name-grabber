@@ -611,7 +611,7 @@
               <object class="GtkEntry" id="output_display">
                 <property name="height-request">21</property>
                 <property name="visible">True</property>
-                <property name="can-focus">True</property>
+                <property name="can-focus">False</property>
                 <property name="valign">center</property>
                 <property name="margin-end">5</property>
                 <property name="hexpand">True</property>
