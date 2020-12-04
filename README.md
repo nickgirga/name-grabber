@@ -19,7 +19,7 @@ Make sure you have `sudo` installed and then run `./install.sh` in the same work
 If you do not have `sudo` installed and/or do not wish to install it, you can modify the script and remove all uses of `sudo` and simply run the script as the superuser using `su`.
 
 # Removal
-Make sure you have `sudo` installed and then run `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber` and the link created at `/usr/bin/name-grabber`. After the uninstaller spits out `Removal complete!`, all files aside from user generated ones should be removed. Once the launcher icon is implemented, the uninstaller will remove that as well.
+Make sure you have `sudo` installed and then run `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber` and the link created at `/usr/bin/name-grabber`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed. Once the launcher icon is implemented, the uninstaller will remove that as well.
 
 If you do not have `sudo` installed and/or do not wish to install it, you can modify the script and remove all uses of `sudo` and simply run the script as the superuser using `su`.
 
