@@ -1,4 +1,13 @@
 #!/usr/bin/python
+# name-grabber
+# Version 3.0
+# Nicholas Girga
+# Released under GPL3 with ABSOLUTELY NO WARRANTY
+
+# This program simply creates and/or updates a text file in the specified
+# directory at a set interval of time with the name of a chosen window. This was
+# intended to be used with OBS to update labels that show what music is playing
+# in the web browser when all other methods fail.
 
 ### imports
 import gi, os, sys, time, subprocess
