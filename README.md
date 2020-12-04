@@ -1,5 +1,5 @@
 # Name Grabber
-This program simply creates/updates `window-name.txt` in the specified directory at the interval of time that you set. This was intended to be used with OBS to update labels that show what music is playing in the web browser when all other methods fail.
+A tool to grab the name of a specified window at a set interval of time.
 
 ![screenshot_3.png](.screenshots/screenshot_3.png)
 ![screenshot_4.png](.screenshots/screenshot_4.png)
