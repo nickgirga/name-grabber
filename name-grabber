@@ -356,6 +356,21 @@ class Main:
         
         self.update_display()
     
+    # called when about_button is pressed
+    def about_button_activate(self, object, data=None):
+        about = Gtk.AboutDialog()
+        about.set_program_name("Name Grabber")
+        about.set_version("3.0")
+        about.set_property("authors", ["Nicholas Girga"])
+        about.set_comments("A tool to grab the name of a specified window at a set interval of time.")
+        about.set_website("http://gitlab.com/nickgirga/name-grabber")
+        about.set_website_label("gitlab.com/nickgirga/name-grabber")
+        about.set_license_type(Gtk.License.GPL_3_0)
+        about.set_logo_icon_name("window")
+        
+        about.run()
+        about.destroy()
+    
     # show save dialog for window-name.txt; cb for select file button    
     def file_destination_select_file_button_clicked(self, object, data=None):
         _file_destination = self.on_save(False, "", "")
