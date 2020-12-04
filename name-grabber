@@ -94,8 +94,8 @@ class Main:
         return _window_name
     
     # simple popup window
-    def create_simple_message_dialog(self, text, yesno=False):
-        message = Gtk.MessageDialog(self.window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO if yesno else Gtk.ButtonsType.OK, text)
+    def create_simple_message_dialog(self, text, yesno=False, window=None):
+        message = Gtk.MessageDialog(window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO if yesno else Gtk.ButtonsType.OK, text)
         response = message.run()
         message.destroy()
         return response
