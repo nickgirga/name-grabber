@@ -1,7 +1,8 @@
 #!/bin/bash
 
+# quit if not superuser
 if [ "$EUID" -ne 0 ]
-    then echo "Please run as root or with sudo"
+    then echo "Please run as superuser or with sudo"
     exit
 fi
 
