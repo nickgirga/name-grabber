@@ -14,14 +14,10 @@ You can clone the repository by running `git clone https://gitlab.com/nickgirga/
  - *any dependencies that the dependencies above require*
 
 # Installation
-Make sure you have `sudo` installed and then run `./install.sh` in the same working directory that contains `name-grabber` and `main.glade`. This will place the resource files in `/usr/share/name-grabber` and create a link to the executable from `/usr/bin/name-grabber`. After the installer spits out `Installation complete!`, you can run `name-grabber` from anywhere. A launcher icon is currently being worked on, but has not been implemented yet.
-
-If you do not have `sudo` installed and/or do not wish to install it, you can modify the script and remove all uses of `sudo` and simply run the script as the superuser using `su`.
+Run `./install.sh` as superuser in the same working directory that contains `name-grabber` and `main.glade`. You can elevate privileges with `sudo ./install.sh` or `su` then `./install.sh`. This will place the resource files in `/usr/share/name-grabber` and create a link to the executable from `/usr/bin/name-grabber`. After the installer spits out `Installation complete!`, you can run `name-grabber` from anywhere. A launcher icon is currently being worked on, but has not been implemented yet.
 
 # Removal
-Make sure you have `sudo` installed and then run `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber` and the link created at `/usr/bin/name-grabber`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed. Once the launcher icon is implemented, the uninstaller will remove that as well.
-
-If you do not have `sudo` installed and/or do not wish to install it, you can modify the script and remove all uses of `sudo` and simply run the script as the superuser using `su`.
+Run `./uninstall.sh` as superuser. You can elevate privileges with `sudo ./uninstall.sh` or `su` then `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber` and the link created at `/usr/bin/name-grabber`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed. Once the launcher icon is implemented, the uninstaller will remove that as well.
 
 # Usage
 Before doing anything, you must select a window. Name Grabber won't let you do anything until a window is selected. Click `Select Window` and click the window you wish to monitor. After selecting a window, you can use the `Settings` expansion panel to change settings like how many characters to clip off the start or end, if any text should be added before or after, how long the delay for updating the file should be, and what file to save the window name to. After choosing the optimal settings for you music source, you can click `File` > `Save Preset` to save the settings as a preset for future use. Then click `Update File` to begin updating the file constantly.
