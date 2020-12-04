@@ -18,6 +18,11 @@ Make sure you have `sudo` installed and then run `./install.sh` in the same work
 
 If you do not have `sudo` installed and/or do not wish to install it, you can modify the script and remove all uses of `sudo` and simply run the script as the superuser using `su`.
 
+# Removal
+Make sure you have `sudo` installed and then run `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber` and the link created at `/usr/bin/name-grabber`. After the uninstaller spits out `Removal complete!`, all files aside from user generated ones should be removed. Once the launcher icon is implemented, the uninstaller will remove that as well.
+
+If you do not have `sudo` installed and/or do not wish to install it, you can modify the script and remove all uses of `sudo` and simply run the script as the superuser using `su`.
+
 # Usage
 Before doing anything, you must select a window. Name Grabber won't let you do anything until a window is selected. Click `Select Window` and click the window you wish to monitor. After selecting a window, you can use the `Settings` expansion panel to change settings like how many characters to clip off the start or end, if any text should be added before or after, how long the delay for updating the file should be, and what file to save the window name to. After choosing the optimal settings for you music source, you can click `File` > `Save Preset` to save the settings as a preset for future use. Then click `Update File` to begin updating the file constantly.
 
