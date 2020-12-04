@@ -53,6 +53,7 @@ def get_window_name(window: bytes) -> str:
 class Main:
     # define consts
     DELAY_BAR_STEP = 500.0
+    GLADE_FILE_PATH = "/usr/share/name-grabber/main.glade"
     
     # define vars
     desired_window = b'0'
@@ -70,7 +71,13 @@ class Main:
     # initialize glade file
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.gladefile = "main.glade"
+        if (os.path.isfile("main.glade")):
+            self.gladefile = "main.glade"
+        elif(os.path.isfile(self.GLADE_FILE_PATH)):
+            self.gladefile = self.GLADE_FILE_PATH
+        else:
+            print("ERR: no \"main.glade\" file found at \"" + self.GLADE_FILE_PATH + "\" or working directory")
+            sys.exit()
         self.builder = Gtk.Builder()
         self.builder.add_from_file(self.gladefile)
         self.builder.connect_signals(self)
