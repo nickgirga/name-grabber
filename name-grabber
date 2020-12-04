@@ -266,6 +266,11 @@ class Main:
     # called when open_preset_button is pressed     
     def open_preset_button_activate(self, object, data=None):
         preset_file = self.on_open(True, "Name Grabber preset file (*.gura)", "*.gura")
+        
+        # return if user cancelled
+        if (preset_file == ""):
+            return
+        
         try:
             # open preset file
             file = open(preset_file, "r")
