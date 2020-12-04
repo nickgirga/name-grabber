@@ -330,7 +330,7 @@ class Main:
             _micro_delay = self.delay / self.DELAY_BAR_STEP
             for i in range(0, int(self.DELAY_BAR_STEP)):
                 time.sleep(_micro_delay)
-                delay_bar.set_property("value", delay_bar.get_property("value") + (1.0 / self.DELAY_BAR_STEP))
+                delay_bar.set_property("value", i / self.DELAY_BAR_STEP)
                 if (not self.main_loop_running):
                     delay_bar.set_property("value", 0.0)
                     return
