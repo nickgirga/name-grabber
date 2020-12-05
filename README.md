@@ -5,7 +5,7 @@ A tool to grab the name of a specified window at a set interval of time.
 ![screenshot_4.png](.screenshots/screenshot_4.png)
 
 # Obtaining
-You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. If you prefer to only grab needed files, download `name-grabber` and `main.glade`. This is enough to run the program, but if you wish to install it, you will need the `install.sh` script. Probably not a bad idea to grab the `uninstall.sh` script as well if you intend to install it.
+You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. You can also go to [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) and download a zip, tar.gz, tar.bz2, or tar of the source code. These compressed archives will give you the same files as cloning using git. If you downloaded a compressed archive, uncompress it. Then proceed to [Installation](#installation).
 
 # Dependencies
  - [Python](https://www.python.org/)
@@ -14,10 +14,10 @@ You can clone the repository by running `git clone https://gitlab.com/nickgirga/
  - *any dependencies that the dependencies above require*
 
 # Installation
-Run `./install.sh` as superuser in the same working directory that contains `name-grabber` and `main.glade`. You can elevate privileges with `sudo ./install.sh` or `su` then `./install.sh`. This will place the resource files in `/usr/share/name-grabber` and create a link to the executable from `/usr/bin/name-grabber`. After the installer spits out `Installation complete!`, you can run `name-grabber` from anywhere. A launcher icon is currently being worked on, but has not been implemented yet.
+Run `./install.sh` as superuser in the same working directory that contains `name-grabber`, `main.glade`, `name-grabber.desktop`, and the `res` folder. You can elevate privileges with `sudo ./install.sh` or `su` then `./install.sh`. This will place the resource files in `/usr/share/name-grabber`, create a link to the executable from `/usr/bin/name-grabber`, and copy a desktop file to `/usr/share/applications/name-grabber.desktop`. After the installer spits out `Installation complete!`, you can run `name-grabber` from anywhere or simply use the laucher icon named `Name Grabber`.
 
 # Removal
-Run `./uninstall.sh` as superuser. You can elevate privileges with `sudo ./uninstall.sh` or `su` then `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber` and the link created at `/usr/bin/name-grabber`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed. Once the launcher icon is implemented, the uninstaller will remove that as well.
+Run `./uninstall.sh` as superuser. You can elevate privileges with `sudo ./uninstall.sh` or `su` then `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber`, the link created at `/usr/bin/name-grabber`, and the desktop file copied to `/usr/share/applications/name-grabber.desktop`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed. Once the launcher icon is implemented, the uninstaller will remove that as well.
 
 # Usage
 Before doing anything, you must select a window. Name Grabber won't let you do anything until a window is selected. Click `Select Window` and click the window you wish to monitor. After selecting a window, you can use the `Settings` expansion panel to change settings like how many characters to clip off the start or end, if any text should be added before or after, how long the delay for updating the file should be, and what file to save the window name to. After choosing the optimal settings for you music source, you can click `File` > `Save Preset` to save the settings as a preset for future use. Then click `Update File` to begin updating the file constantly.
