@@ -5,7 +5,7 @@ A tool to grab the name of a specified window at a set interval of time.
 ![screenshot_4.png](.screenshots/screenshot_4.png)
 
 # Obtaining
-You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. You can also go to [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) and download a zip, tar.gz, tar.bz2, or tar of the source code. These compressed archives will give you the same files as cloning using git. If you downloaded a compressed archive, uncompress it. Then proceed to [Installation](#installation).
+You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. You can also go to [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) and download a zip, tar.gz, tar.bz2, or tar of the source code. These compressed archives will give you the same files as cloning using git. If you downloaded a compressed archive, decompress it. Then proceed to [Installation](#installation).
 
 # Dependencies
  - [Python](https://www.python.org/)
