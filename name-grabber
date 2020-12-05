@@ -124,7 +124,7 @@ class Main:
     # show save dialog and return the file destination
     def on_save(self, use_filter: bool, filter_name: str, filter_pattern: str) -> str:
         # create and setup dialog
-        dialog = Gtk.FileChooserDialog("Please choose a file", self.window,
+        dialog = Gtk.FileChooserDialog("Please choose where to save file", self.window,
         Gtk.FileChooserAction.SAVE, (Gtk.STOCK_CANCEL, Gtk.ResponseType.CANCEL,
         Gtk.STOCK_SAVE, Gtk.ResponseType.OK))
         dialog.set_property("do_overwrite_confirmation", True)
