@@ -12,7 +12,8 @@ rm -rf /usr/share/name-grabber/
 # remove link to executable in the /usr/bin folder
 rm -f /usr/bin/name-grabber
 
-# to-do: remove launcher icon
+# remove launcher icon from /usr/share/applications
+rm -f /usr/share/applications/name-grabber.desktop
 
 #report to user that removal is complete
 echo Removal complete!

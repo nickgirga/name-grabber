@@ -1,0 +1,10 @@
+#!/usr/bin/env xdg-open
+
+[Desktop Entry]
+Version=3.0
+Type=Application
+Terminal=false
+Exec=name-grabber
+Name=Name Grabber
+Comment=A tool to grab the name of a specified window at a set interval of time.
+Icon=/usr/share/name-grabber/res/icon_256x256.png

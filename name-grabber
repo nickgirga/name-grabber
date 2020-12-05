@@ -15,13 +15,19 @@ gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 from threading import Thread
 from os.path import expanduser
+from gi.repository import GdkPixbuf
 
 ### define main class
 class Main:
     # define consts
     DELAY_BAR_STEP = 500.0
     DEFAULT_FILE_DESTINATION = expanduser("~") + "/window-name.txt"
-    GLADE_FILE_PATH = "/usr/share/name-grabber/main.glade"
+    LOCAL_GLADE_FILE_PATH = "./main.glade"
+    SYSTEM_GLADE_FILE_PATH = "/usr/share/name-grabber/main.glade"
+    LOCAL_SMALL_ICON_FILE_PATH = "./res/icon_16x16.png"
+    SYSTEM_SMALL_ICON_FILE_PATH = "/usr/share/name-grabber/res/icon_16x16.png"
+    LOCAL_LARGE_ICON_FILE_PATH = "./res/icon_128x128.png"
+    SYSTEM_LARGE_ICON_FILE_PATH = "/usr/share/name-grabber/res/icon_128x128.png"
     
     # define vars
     desired_window = b'0'
@@ -39,17 +45,24 @@ class Main:
     # initialize glade file
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        if (os.path.isfile("main.glade")):
-            self.gladefile = "main.glade"
-        elif(os.path.isfile(self.GLADE_FILE_PATH)):
-            self.gladefile = self.GLADE_FILE_PATH
+        if (os.path.isfile(self.LOCAL_GLADE_FILE_PATH)):
+            self.gladefile = self.LOCAL_GLADE_FILE_PATH
+        elif(os.path.isfile(self.SYSTEM_GLADE_FILE_PATH)):
+            self.gladefile = self.SYSTEM_GLADE_FILE_PATH
         else:
-            self.create_simple_message_dialog("ERR: no \"main.glade\" file found at \"" + self.GLADE_FILE_PATH + "\" or working directory")
+            self.create_simple_message_dialog("ERR: no \"main.glade\" file found at \"" + self.SYSTEM_GLADE_FILE_PATH + "\" or at \"" + self.LOCAL_GLADE_FILE_PATH + "\" working directory", "Name Grabber - Error")
             sys.exit()
         self.builder = Gtk.Builder()
         self.builder.add_from_file(self.gladefile)
         self.builder.connect_signals(self)
         self.window = self.builder.get_object("window0")
+        if (os.path.isfile(self.LOCAL_SMALL_ICON_FILE_PATH)):
+            self.window.set_icon_from_file(self.LOCAL_SMALL_ICON_FILE_PATH)
+        elif (os.path.isfile(self.SYSTEM_SMALL_ICON_FILE_PATH)):
+            self.window.set_icon_from_file(self.SYSTEM_SMALL_ICON_FILE_PATH)
+        else:
+            self.create_simple_message_dialog("ERR: No icon found at \"" + self.SYSTEM_SMALL_ICON_FILE_PATH + "\" or at \"" + self.LOCAL_SMALL_ICON_FILE_PATH + "\" in the working directory.","Name Grabber - Error")
+            self.window.set_icon_name("window")
         self.window.present()
         
         self.builder.get_object("file_destination_textbox").set_property("text", self.file_destination)
@@ -94,8 +107,16 @@ class Main:
         return _window_name
     
     # simple popup window
-    def create_simple_message_dialog(self, text, yesno=False, window=None):
+    def create_simple_message_dialog(self, text, title="Name Grabber", yesno=False, window=None):
         message = Gtk.MessageDialog(window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO if yesno else Gtk.ButtonsType.OK, text)
+        message.set_title(title)
+        if (os.path.isfile(self.LOCAL_SMALL_ICON_FILE_PATH)):
+            message.set_icon_from_file(self.LOCAL_SMALL_ICON_FILE_PATH)
+        elif (os.path.isfile(self.SYSTEM_SMALL_ICON_FILE_PATH)):
+            message.set_icon_from_file(self.SYSTEM_SMALL_ICON_FILE_PATH)
+        else:
+            print("ERR: No icon found at \"" + self.SYSTEM_SMALL_ICON_FILE_PATH + "\" or at \"" + self.LOCAL_SMALL_ICON_FILE_PATH + "\" in the working directory.")
+            message.set_icon_name("window")
         response = message.run()
         message.destroy()
         return response
@@ -313,7 +334,7 @@ class Main:
                 file.write(self.file_destination + "\n")
                 file.close()
             except Exception as e:
-                self.create_simple_message_dialog("ERR: failed to print preset to file.\n\n" + str(e))
+                self.create_simple_message_dialog("ERR: failed to print preset to file.\n\n" + str(e), "Name Grabber - Error")
                 sys.exit()
            
     # called when open_preset_button is pressed     
@@ -335,7 +356,7 @@ class Main:
             _suffix = lines[4][:len(lines[4]) - 1]
             _file_destination = lines[5][:len(lines[5]) - 1]
         except Exception as e:
-            self.create_simple_message_dialog("ERR: failed to open preset file.\n" + str(e))
+            self.create_simple_message_dialog("ERR: failed to open preset file.\n" + str(e), "Name Grabber - Error")
             sys.exit()
             
         # update settings widgets
@@ -366,7 +387,23 @@ class Main:
         about.set_website("http://gitlab.com/nickgirga/name-grabber")
         about.set_website_label("gitlab.com/nickgirga/name-grabber")
         about.set_license_type(Gtk.License.GPL_3_0)
-        about.set_logo_icon_name("window")
+        pixbuf = GdkPixbuf.Pixbuf()
+        if (os.path.isfile(self.LOCAL_LARGE_ICON_FILE_PATH)):
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.LOCAL_LARGE_ICON_FILE_PATH)
+            about.set_logo(pixbuf)
+        elif (os.path.isfile(self.SYSTEM_LARGE_ICON_FILE_PATH)):
+            pixbuf = GdkPixbuf.Pixbuf.new_from_file(self.SYSTEM_LARGE_ICON_FILE_PATH)
+            about.set_logo(pixbuf)
+        else:
+            self.create_simple_message_dialog("ERR: No icon found at \"" + self.SYSTEM_LARGE_ICON_FILE_PATH + "\" or at \"" + self.LOCAL_LARGE_ICON_FILE_PATH + "\" in the working directory.", "Name Grabber - Error")
+            about.set_logo_icon_name("window")
+        if (os.path.isfile(self.LOCAL_SMALL_ICON_FILE_PATH)):
+            about.set_icon_from_file(self.LOCAL_SMALL_ICON_FILE_PATH)
+        elif (os.path.isfile(self.SYSTEM_SMALL_ICON_FILE_PATH)):
+            about.set_icon_from_file(self.SYSTEM_SMALL_ICON_FILE_PATH)
+        else:
+            self.create_simple_message_dialog("ERR: No icon found at \"" + self.SYSTEM_SMALL_ICON_FILE_PATH + "\" or at \"" + self.LOCAL_SMALL_ICON_FILE_PATH + "\" in the working directory.","Name Grabber - Error")
+            about.set_icon_name("window")
         
         about.run()
         about.destroy()
@@ -391,7 +428,7 @@ class Main:
                 file.write(self.pretty_window_name)
                 file.close()
             except:
-                self.create_simple_message_dialog("ERR: failed to print window name to file.")
+                self.create_simple_message_dialog("ERR: failed to print window name to file.", "Name Grabber - Error")
                 sys.exit()
             
             self.delay = self.builder.get_object("delay_value").get_property("value")
