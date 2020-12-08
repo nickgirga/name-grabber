@@ -10,6 +10,7 @@ You can clone the repository by running `git clone https://gitlab.com/nickgirga/
 # Dependencies
  - [Python](https://www.python.org/)
  - [PyGObject](https://pypi.org/project/PyGObject/)
+ - [GTK](https://www.gtk.org/)
  - [xdotool](https://github.com/jordansissel/xdotool)
  - *any dependencies that the dependencies above require*
 
