@@ -1,12 +1,11 @@
 # Maintainer: Nicholas Girga <contact@nickgirga.com>
 pkgname='name-grabber'
-pkgver=r86.09e87f9
+pkgver=3.0
 pkgrel=1
 pkgdesc="A tool to grab the name of a specified window at a set interval of time"
 arch=('x86_64')
 url="https://gitlab.com/nickgirga/name-grabber"
 license=('GPL3')
-groups=()
 depends=('python' 'python-gobject' 'gtk3' 'xdotool')
 source=('name-grabber-git::git+https://gitlab.com/nickgirga/name-grabber.git')
 md5sums=('SKIP')
