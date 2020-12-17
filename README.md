@@ -27,7 +27,7 @@ Run `./install.sh` as superuser in the same working directory that contains `nam
 
 # Removal
 #### Arch Linux
-If installed using a pkg.tar.zst package (or you created this package yourself using the PKGBUILD), simply run `pacman -R name-grabber` as superuser. You may also search for `name-grabber` using a GUI software center such as [pamac](https://gitlab.manjaro.org/applications/pamac) to uninstall it easily. If you used the PKGBUILD, be sure to delete all of the directories and files that were created when running `makepkg` as `pacman` will not remove these. **DO NOT** use the `install.sh` and `uninstall.sh` scripts once you start installing `name-grabber` using `pacman`.
+If installed using a pkg.tar.zst package (or you created this package yourself using the PKGBUILD), simply run `pacman -Rs name-grabber` as superuser. You may also search for `name-grabber` using a GUI software center such as [pamac](https://gitlab.manjaro.org/applications/pamac) to uninstall it easily. If you used the PKGBUILD, be sure to delete all of the directories and files that were created when running `makepkg` as `pacman` will not remove these. **DO NOT** use the `install.sh` and `uninstall.sh` scripts once you start installing `name-grabber` using `pacman`.
 
 #### Else
 Run `./uninstall.sh` as superuser. You can elevate privileges using `sudo` or `su`. It will remove the resource folder at `/usr/share/name-grabber`, the executable link created at `/usr/bin/name-grabber`, and the desktop file link created at `/usr/share/applications/name-grabber.desktop`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed.
