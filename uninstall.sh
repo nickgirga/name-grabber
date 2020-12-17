@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# DO NOT USE IF INSTALLED USING pacman
+# Arch Linux users: DO NOT USE IF INSTALLED USING pacman. Uninstall through pacman (`pacman -Rs name-grabber`)
 
 # quit if not superuser
 if [ "$EUID" -ne 0 ]
