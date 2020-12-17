@@ -6,7 +6,7 @@ A tool to grab the name of a specified window at a set interval of time.
 
 # Obtaining
 #### Arch Linux
-Finished pkg.tar.zst packages created for Arch Linux using the makepkg system can be found under the [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) page. Simply download one using a web browser. If you wish to create this package yourself, downloading just the [PKGBUILD](https://gitlab.com/nickgirga/window-name-to-file/-/raw/master/PKGBUILD?inline=false) in the root directory of the repository should suffice. After you acquired a pkg.tar.zst or PKGBUILD proceed to [Installation](#installation).
+Finished pkg.tar.zst packages created for Arch Linux using the makepkg system can be found under the [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) page. Simply download one using a web browser. If you wish to create this package yourself, downloading just the [PKGBUILD](https://gitlab.com/nickgirga/window-name-to-file/-/raw/master/PKGBUILD?inline=false) in the root directory of the repository should suffice. After you've acquired a pkg.tar.zst or PKGBUILD proceed to [Installation](#installation).
 
 #### Else
 You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. You can also go to [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) and download a zip, tar.gz, tar.bz2, or tar of the source code. These compressed archives will give you the same files as cloning using git. If you downloaded a compressed archive, decompress it. Then proceed to [Installation](#installation).
