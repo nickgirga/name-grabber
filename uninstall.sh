@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# DO NOT USE IF INSTALLED USING pacman
+
 # quit if not superuser
 if [ "$EUID" -ne 0 ]
     then echo "Please run as superuser or with sudo"

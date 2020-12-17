@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# DO NOT USE IF PREVIOUSLY INSTALLED USING pacman. Uninstall through pacman (`pacman -Rs name-grabber`) if you wish you use this script.
 # Run within the same directory as name-grabber, main.glade, res, and name-grabber.desktop
 
 # quit if not superuser
