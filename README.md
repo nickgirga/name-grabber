@@ -5,6 +5,10 @@ A tool to grab the name of a specified window at a set interval of time.
 ![screenshot_4.png](.screenshots/screenshot_4.png)
 
 # Obtaining
+#### Arch Linux
+Finished pkg.tar.zst packages created for Arch Linux using the makepkg system can be found under the [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) page. Simply download one using a web browser. If you wish to create this package yourself, downloading just the [PKGBUILD](https://gitlab.com/nickgirga/window-name-to-file/-/raw/master/PKGBUIILD?inline=false) in the root directory of the repository should suffice. After you acquired a pkg.tar.zst or PKGBUILD proceed to [Installation](#installation).
+
+#### Else
 You can clone the repository by running `git clone https://gitlab.com/nickgirga/name-grabber.git` in a terminal. You can also go to [Releases](https://gitlab.com/nickgirga/name-grabber/-/releases) and download a zip, tar.gz, tar.bz2, or tar of the source code. These compressed archives will give you the same files as cloning using git. If you downloaded a compressed archive, decompress it. Then proceed to [Installation](#installation).
 
 # Dependencies
@@ -15,10 +19,18 @@ You can clone the repository by running `git clone https://gitlab.com/nickgirga/
  - *any dependencies that the dependencies above require*
 
 # Installation
-Run `./install.sh` as superuser in the same working directory that contains `name-grabber`, `main.glade`, `name-grabber.desktop`, and the `res` folder. You can elevate privileges with `sudo ./install.sh` or `su` then `./install.sh`. This will place the resource files in `/usr/share/name-grabber`, create a link to the executable from `/usr/bin/name-grabber`, and create a link to the desktop file from `/usr/share/applications/name-grabber.desktop`. After the installer spits out `Installation complete!`, you can run `name-grabber` from anywhere or simply use the laucher icon named `Name Grabber`.
+#### Arch Linux
+If using a pkg.tar.zst package, simply run `pacman -U $PACKAGE_NAME.pkg.tar.zst` as superuser in the same directory as the pkg.tar.zst file after replacing `$PACKAGE_NAME` with your pkg.tar.zst file's name. You can elevate privileges using `sudo` or `su`. If you wish to create this package yourself, run `makepkg -si` in the same directory as the `PKGBUILD`. This will construct the package and prompt you to install it using `pacman -U`. You should now be able to launch the application using the `Name Grabber` launcher icon or by running `name-grabber` in a terminal. **DO NOT** use the `install.sh` and `uninstall.sh` scripts once you start installing `name-grabber` using `pacman`.
+
+#### Else
+Run `./install.sh` as superuser in the same working directory that contains `name-grabber`, `main.glade`, `name-grabber.desktop`, and the `res` folder. You can elevate privileges using `sudo` or `su`. This will place the resource files in `/usr/share/name-grabber`, create a link to the executable from `/usr/bin/name-grabber`, and create a link to the desktop file from `/usr/share/applications/name-grabber.desktop`. After the installer spits out `Installation complete!`, you should be able to launch the application using the `Name Grabber` launcher icon or by running `name-grabber` in a terminal.
 
 # Removal
-Run `./uninstall.sh` as superuser. You can elevate privileges with `sudo ./uninstall.sh` or `su` then `./uninstall.sh`. It will remove the resource folder at `/usr/share/name-grabber`, the executable link created at `/usr/bin/name-grabber`, and the desktop file link created at `/usr/share/applications/name-grabber.desktop`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed.
+#### Arch Linux
+If installed using a pkg.tar.zst package (or you created this package yourself using the PKGBUILD), simply run `pacman -R name-grabber` as superuser. If you used the PKGBUILD, be sure to delete all of the directories and files that were created when running `makepkg` as `pacman` will not remove these. **DO NOT** use the `install.sh` and `uninstall.sh` scripts once you start installing `name-grabber` using `pacman`.
+
+#### Else
+Run `./uninstall.sh` as superuser. You can elevate privileges using `sudo` or `su`. It will remove the resource folder at `/usr/share/name-grabber`, the executable link created at `/usr/bin/name-grabber`, and the desktop file link created at `/usr/share/applications/name-grabber.desktop`. After the uninstaller spits out `Removal complete!`, all of Name Grabber's files aside from user generated ones should be removed.
 
 # Usage
 Before doing anything, you must select a window. Name Grabber won't let you do anything until a window is selected. Click `Select Window` and click the window you wish to monitor. After selecting a window, you can use the `Settings` expansion panel to change settings like how many characters to clip off the start or end, if any text should be added before or after, how long the delay for updating the file should be, and what file to save the window name to. After choosing the optimal settings for you music source, you can click `File` > `Save Preset` to save the settings as a preset for future use. Then click `Update File` to begin updating the file constantly.
