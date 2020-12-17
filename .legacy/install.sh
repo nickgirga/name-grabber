@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Run within the same directory as name-grabber, main.glade, res, and name-grabber.desktop
+
 # quit if not superuser
 if [ "$EUID" -ne 0 ]
     then echo "Please run as superuser or with sudo"
