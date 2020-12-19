@@ -1,6 +1,6 @@
 # Maintainer: Nicholas Girga <contact@nickgirga.com>
 pkgname='name-grabber'
-pkgver=3.1
+pkgver=3.2
 pkgrel=1
 pkgdesc="A tool to grab the name of a specified window at a set interval of time"
 arch=('any')
