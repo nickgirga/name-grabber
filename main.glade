@@ -1,7 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Generated with glade 3.38.1 -->
+<!-- Generated with glade 3.38.2 
+
+Copyright (C) 
+
+This file is part of Name Grabber.
+
+Name Grabber is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+Name Grabber is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with Name Grabber.  If not, see <http://www.gnu.org/licenses/>.
+
+Author: Nicholas Girga
+
+-->
 <interface>
   <requires lib="gtk+" version="3.24"/>
+  <!-- interface-license-type gplv3 -->
+  <!-- interface-name Name Grabber -->
+  <!-- interface-description A tool to grab the name of a specified window at a set interval of time -->
+  <!-- interface-authors Nicholas Girga -->
+  <object class="GtkImage" id="about_icon">
+    <property name="visible">True</property>
+    <property name="can-focus">False</property>
+    <property name="icon-name">gtk-about</property>
+  </object>
   <object class="GtkAdjustment" id="crop_end_value">
     <property name="upper">100</property>
     <property name="step-increment">1</property>
@@ -15,122 +45,41 @@
     <signal name="value-changed" handler="crop_start_value_changed" swapped="no"/>
   </object>
   <object class="GtkAdjustment" id="delay_value">
-    <property name="lower">0.1</property>
+    <property name="lower">0.10</property>
     <property name="upper">500</property>
     <property name="value">1</property>
-    <property name="step-increment">0.1</property>
+    <property name="step-increment">0.10</property>
     <property name="page-increment">10</property>
     <signal name="value-changed" handler="delay_value_changed" swapped="no"/>
   </object>
-  <object class="GtkImage" id="image1">
+  <object class="GtkImage" id="file_destination_save_as_icon">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="stock">gtk-save-as</property>
+    <property name="icon-name">gtk-save-as</property>
   </object>
-  <object class="GtkImage" id="image2">
+  <object class="GtkImage" id="file_icon">
     <property name="visible">True</property>
     <property name="can-focus">False</property>
-    <property name="stock">gtk-open</property>
+    <property name="icon-name">gtk-file</property>
   </object>
-  <object class="GtkImage" id="image3">
-    <property name="visible">True</property>
+  <object class="GtkPopover" id="file_popover">
     <property name="can-focus">False</property>
-    <property name="stock">gtk-save-as</property>
-  </object>
-  <object class="GtkWindow" id="window0">
-    <property name="can-focus">False</property>
-    <property name="title" translatable="yes">Name Grabber</property>
-    <property name="resizable">False</property>
-    <property name="default-width">395</property>
-    <property name="default-height">-1</property>
-    <signal name="hide" handler="on_gtk_quit_activate" swapped="no"/>
+    <property name="relative-to">file_icon</property>
     <child>
       <object class="GtkBox">
         <property name="visible">True</property>
         <property name="can-focus">False</property>
         <property name="orientation">vertical</property>
         <child>
-          <object class="GtkMenuBar" id="menu_bar">
+          <object class="GtkModelButton" id="open_preset_button">
             <property name="visible">True</property>
-            <property name="can-focus">False</property>
-            <child>
-              <object class="GtkMenuItem" id="file_button">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">_File</property>
-                <property name="use-underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="file_menu">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="open_preset_button">
-                        <property name="label" translatable="yes">Open Preset</property>
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can-focus">False</property>
-                        <property name="tooltip-text" translatable="yes">Select a window before opening a preset</property>
-                        <property name="image">image2</property>
-                        <property name="use-stock">False</property>
-                        <signal name="activate" handler="open_preset_button_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="save_preset_button">
-                        <property name="label" translatable="yes">Save Preset</property>
-                        <property name="visible">True</property>
-                        <property name="sensitive">False</property>
-                        <property name="can-focus">False</property>
-                        <property name="tooltip-text" translatable="yes">Select a window before saving a preset</property>
-                        <property name="image">image1</property>
-                        <property name="use-stock">False</property>
-                        <signal name="activate" handler="save_preset_button_activate" swapped="no"/>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkSeparatorMenuItem">
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                      </object>
-                    </child>
-                    <child>
-                      <object class="GtkImageMenuItem" id="quit_button">
-                        <property name="label">gtk-quit</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                        <signal name="activate" handler="on_gtk_quit_activate" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
-            <child>
-              <object class="GtkMenuItem" id="help_button">
-                <property name="visible">True</property>
-                <property name="can-focus">False</property>
-                <property name="label" translatable="yes">_Help</property>
-                <property name="use-underline">True</property>
-                <child type="submenu">
-                  <object class="GtkMenu" id="help_menu">
-                    <property name="visible">True</property>
-                    <property name="can-focus">False</property>
-                    <child>
-                      <object class="GtkImageMenuItem" id="about_button">
-                        <property name="label">gtk-about</property>
-                        <property name="visible">True</property>
-                        <property name="can-focus">False</property>
-                        <property name="use-underline">True</property>
-                        <property name="use-stock">True</property>
-                        <signal name="activate" handler="about_button_activate" swapped="no"/>
-                      </object>
-                    </child>
-                  </object>
-                </child>
-              </object>
-            </child>
+            <property name="sensitive">False</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Select a window before opening a preset</property>
+            <property name="vexpand">True</property>
+            <property name="text" translatable="yes">Open Preset</property>
+            <signal name="clicked" handler="open_preset_button_clicked" swapped="no"/>
           </object>
           <packing>
             <property name="expand">False</property>
@@ -138,6 +87,63 @@
             <property name="position">0</property>
           </packing>
         </child>
+        <child>
+          <object class="GtkModelButton" id="save_preset_button">
+            <property name="visible">True</property>
+            <property name="sensitive">False</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="tooltip-text" translatable="yes">Select a window before saving a preset</property>
+            <property name="vexpand">True</property>
+            <property name="text" translatable="yes">Save Preset</property>
+            <signal name="clicked" handler="save_preset_button_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkSeparator">
+            <property name="visible">True</property>
+            <property name="can-focus">False</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkModelButton" id="quit_button">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="vexpand">True</property>
+            <property name="text" translatable="yes">Quit</property>
+            <signal name="clicked" handler="on_window0_destroy" swapped="no"/>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkWindow" id="window0">
+    <property name="can-focus">False</property>
+    <property name="resizable">False</property>
+    <property name="default-width">395</property>
+    <property name="default-height">-1</property>
+    <signal name="hide" handler="on_window0_destroy" swapped="no"/>
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="orientation">vertical</property>
         <child>
           <object class="GtkBox" id="window_selector">
             <property name="visible">True</property>
@@ -147,7 +153,7 @@
               <object class="GtkEntry" id="window_name_textbox">
                 <property name="height-request">21</property>
                 <property name="visible">True</property>
-                <property name="can-focus">False</property>
+                <property name="can-focus">True</property>
                 <property name="margin-start">5</property>
                 <property name="margin-top">5</property>
                 <property name="margin-bottom">5</property>
@@ -264,7 +270,7 @@
                                 <property name="hexpand">True</property>
                                 <property name="vexpand">True</property>
                                 <property name="adjustment">crop_start_value</property>
-                                <property name="round-digits">1</property>
+                                <property name="round-digits">0</property>
                                 <property name="digits">0</property>
                                 <property name="value-pos">right</property>
                               </object>
@@ -315,7 +321,7 @@
                                 <property name="vexpand">True</property>
                                 <property name="adjustment">crop_end_value</property>
                                 <property name="inverted">True</property>
-                                <property name="round-digits">1</property>
+                                <property name="round-digits">0</property>
                                 <property name="digits">0</property>
                                 <property name="value-pos">right</property>
                               </object>
@@ -482,8 +488,9 @@
                             <property name="margin-bottom">5</property>
                             <property name="hexpand">True</property>
                             <property name="vexpand">True</property>
+                            <property name="text" translatable="yes">1.0</property>
                             <property name="adjustment">delay_value</property>
-                            <property name="climb-rate">0.1</property>
+                            <property name="climb-rate">0.10</property>
                             <property name="digits">1</property>
                             <property name="value">1</property>
                           </object>
@@ -526,7 +533,7 @@
                         <child>
                           <object class="GtkEntry" id="file_destination_textbox">
                             <property name="visible">True</property>
-                            <property name="can-focus">False</property>
+                            <property name="can-focus">True</property>
                             <property name="valign">center</property>
                             <property name="hexpand">True</property>
                             <property name="vexpand">False</property>
@@ -547,7 +554,7 @@
                             <property name="valign">center</property>
                             <property name="margin-end">5</property>
                             <property name="vexpand">True</property>
-                            <property name="image">image3</property>
+                            <property name="image">file_destination_save_as_icon</property>
                             <signal name="clicked" handler="file_destination_select_file_button_clicked" swapped="no"/>
                           </object>
                           <packing>
@@ -613,7 +620,7 @@
               <object class="GtkEntry" id="output_display">
                 <property name="height-request">21</property>
                 <property name="visible">True</property>
-                <property name="can-focus">False</property>
+                <property name="can-focus">True</property>
                 <property name="valign">center</property>
                 <property name="margin-end">5</property>
                 <property name="hexpand">True</property>
@@ -682,6 +689,36 @@
             <property name="expand">False</property>
             <property name="fill">True</property>
             <property name="position">4</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <child type="titlebar">
+      <object class="GtkHeaderBar">
+        <property name="visible">True</property>
+        <property name="can-focus">False</property>
+        <property name="title" translatable="yes">Name Grabber</property>
+        <property name="show-close-button">True</property>
+        <child>
+          <object class="GtkButton" id="file_button">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="image">file_icon</property>
+            <signal name="clicked" handler="file_button_clicked" object="file_popover" swapped="no"/>
+          </object>
+        </child>
+        <child>
+          <object class="GtkButton" id="about_button">
+            <property name="visible">True</property>
+            <property name="can-focus">True</property>
+            <property name="receives-default">True</property>
+            <property name="image">about_icon</property>
+            <signal name="clicked" handler="about_button_clicked" swapped="no"/>
+          </object>
+          <packing>
+            <property name="pack-type">end</property>
+            <property name="position">1</property>
           </packing>
         </child>
       </object>

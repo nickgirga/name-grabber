@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # name-grabber
-# Version 3.1
+# Version 3.2
 # Nicholas Girga
 # Released under GPL3 with ABSOLUTELY NO WARRANTY
 
@@ -255,11 +255,6 @@ class Main:
     def on_window0_destroy(self, object, data=None):
         self.main_loop_running = False
         Gtk.main_quit()
-
-    # quit from menu
-    def on_gtk_quit_activate(self, menuitem, data=None):
-        self.main_loop_running = False
-        Gtk.main_quit()
        
     # called when the value of crop_start_value has changed
     def crop_start_value_changed(self, object, data=None):
@@ -311,7 +306,7 @@ class Main:
             object.set_property("active", False)
     
     # called when save_preset_button is pressed
-    def save_preset_button_activate(self, object, data=None):
+    def save_preset_button_clicked(self, object, data=None):
         preset_file_destination = self.on_save(True, "Name Grabber preset file (*.gura)", "*.gura")
         if (preset_file_destination != ""):
             try:
@@ -329,7 +324,7 @@ class Main:
                 sys.exit()
            
     # called when open_preset_button is pressed     
-    def open_preset_button_activate(self, object, data=None):
+    def open_preset_button_clicked(self, object, data=None):
         preset_file = self.on_open(True, "Name Grabber preset file (*.gura)", "*.gura")
         
         # return if user cancelled
@@ -369,10 +364,10 @@ class Main:
         self.update_display()
     
     # called when about_button is pressed
-    def about_button_activate(self, object, data=None):
+    def about_button_clicked(self, object, data=None):
         about = Gtk.AboutDialog()
         about.set_program_name("Name Grabber")
-        about.set_version("3.1")
+        about.set_version("3.2")
         about.set_property("authors", ["Nicholas Girga"])
         about.set_comments("A tool to grab the name of a specified window at a set interval of time.")
         about.set_website("http://gitlab.com/nickgirga/name-grabber")
@@ -405,6 +400,10 @@ class Main:
         if (_file_destination != ""):
             self.file_destination = _file_destination
             self.builder.get_object("file_destination_textbox").set_property("text", self.file_destination)
+        
+    # called when file button in header bar is clicked; shows file popover
+    def file_button_clicked(self, popover, data=None):
+        popover.popup()
         
     # the main loop; responsible for updating window name information and printing it to a file
     def main_loop(self):
