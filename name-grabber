@@ -146,7 +146,8 @@ class Main:
         
         # just in case :P
         dialog.destroy()
-        
+
+    # show open dialog and return the desired file path
     def on_open(self, use_filter: bool, filter_name: str, filter_pattern: str) -> str:
         # create and setup dialog
         dialog = Gtk.FileChooserDialog("Please choose a file", self.window,
