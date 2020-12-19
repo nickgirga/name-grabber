@@ -108,7 +108,7 @@ class Main:
     
     # simple popup window
     def create_simple_message_dialog(self, text, title="Name Grabber", yesno=False, window=None):
-        message = Gtk.MessageDialog(window, 0, Gtk.MessageType.INFO, Gtk.ButtonsType.YES_NO if yesno else Gtk.ButtonsType.OK, text)
+        message = Gtk.MessageDialog(parent=window, flags=0, message_type=Gtk.MessageType.INFO, buttons=(Gtk.ButtonsType.YES_NO if yesno else Gtk.ButtonsType.OK), text=text)
         message.set_title(title)
         if (os.path.isfile(self.LOCAL_SMALL_ICON_FILE_PATH)):
             message.set_icon_from_file(self.LOCAL_SMALL_ICON_FILE_PATH)
