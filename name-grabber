@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # name-grabber
-# Version 3.0
+# Version 3.1
 # Nicholas Girga
 # Released under GPL3 with ABSOLUTELY NO WARRANTY
 
@@ -372,7 +372,7 @@ class Main:
     def about_button_activate(self, object, data=None):
         about = Gtk.AboutDialog()
         about.set_program_name("Name Grabber")
-        about.set_version("3.0")
+        about.set_version("3.1")
         about.set_property("authors", ["Nicholas Girga"])
         about.set_comments("A tool to grab the name of a specified window at a set interval of time.")
         about.set_website("http://gitlab.com/nickgirga/name-grabber")
