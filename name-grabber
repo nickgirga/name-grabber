@@ -50,7 +50,7 @@ class Main:
         elif(os.path.isfile(self.SYSTEM_GLADE_FILE_PATH)):
             self.gladefile = self.SYSTEM_GLADE_FILE_PATH
         else:
-            self.create_simple_message_dialog("ERR: no \"main.glade\" file found at \"" + self.SYSTEM_GLADE_FILE_PATH + "\" or at \"" + self.LOCAL_GLADE_FILE_PATH + "\" working directory", "Name Grabber - Error")
+            self.create_simple_message_dialog("ERR: no \"main.glade\" file found at \"" + self.SYSTEM_GLADE_FILE_PATH + "\" or at \"" + self.LOCAL_GLADE_FILE_PATH + "\" in the working directory", "Name Grabber - Error")
             sys.exit()
         self.builder = Gtk.Builder()
         self.builder.add_from_file(self.gladefile)
