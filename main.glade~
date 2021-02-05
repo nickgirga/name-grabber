@@ -204,7 +204,6 @@ Author: Nicholas Girga
             <property name="tooltip-text" translatable="yes">Select a window before changing settings</property>
             <property name="margin-start">5</property>
             <property name="margin-end">5</property>
-            <property name="margin-bottom">5</property>
             <child>
               <object class="GtkBox" id="settings_pane_content">
                 <property name="visible">True</property>
